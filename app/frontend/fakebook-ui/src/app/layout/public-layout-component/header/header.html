@@ -1,0 +1,20 @@
+<header class="topbar">
+  <div class="topbar__left">
+    <div class="logo-icon">
+      <span class="diamond">◈</span>
+    </div>
+
+    <div class="logo-text">
+      <span class="logo-text__nova">Fakebook</span><span class="logo-text__social">Social</span>
+    </div>
+  </div>
+
+  <nav class="topbar__center">
+    <a class="nav-link" *ngFor="let menu of menus" [href]="menu.link">{{ menu.label }}</a>
+  </nav>
+
+  <div class="topbar__right">
+    <a matButton href="#" class="login-link">Log in</a>
+    <button class="join-btn">Join Fakebook</button>
+  </div>
+</header>
