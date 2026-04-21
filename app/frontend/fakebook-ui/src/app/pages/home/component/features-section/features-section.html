@@ -1,0 +1,19 @@
+<section class="features">
+  <div class="features__container">
+    <div class="features__header">
+      <span class="features__eyebrow">FEATURES</span>
+
+      <h2 class="features__title">
+        Everything you love about
+        <br />
+        social. None of what you
+        <br />
+        don't.
+      </h2>
+    </div>
+
+    <div class="features__grid">
+      <app-feature-card *ngFor="let feature of features" [item]="feature"> </app-feature-card>
+    </div>
+  </div>
+</section>

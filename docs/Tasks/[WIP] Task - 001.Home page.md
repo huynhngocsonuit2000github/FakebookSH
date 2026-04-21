@@ -5,6 +5,10 @@
 - Separate the page into multiple component
   - header [done]
   - footer [done]
+  - intro (hero) [done]
+  - features [done]
+  - community
+  - why Fake
 - combine component into the home page
 
 # Step todo (from GPT https://chatgpt.com/g/g-p-69e64dde26988191ada954724fbfe044-self-learning-angular/c/69e64e3c-e254-83a0-959e-b1ba62531f58)
