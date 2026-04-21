@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Header } from '../public-layout-component/header/header';
-import { Footer } from '../public-layout-component/footer/footer';
+import { Header } from '../component/header/header';
+import { Footer } from '../component/footer/footer';
 
 @Component({
   selector: 'app-public-layout',

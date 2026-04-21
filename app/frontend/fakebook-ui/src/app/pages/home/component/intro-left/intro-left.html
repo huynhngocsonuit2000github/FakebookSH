@@ -1,0 +1,35 @@
+<div class="hero__left">
+  <div class="beta-badge">
+    <mat-icon>auto_awesome</mat-icon>
+    <span>Now in open beta</span>
+  </div>
+
+  <h1 class="hero__title">
+    Social, but it
+    <br />
+    actually feels
+    <br />
+    <span>good.</span>
+  </h1>
+
+  <p class="hero__subtitle">
+    Nova Social is a calmer place to share, chat, and stay close to the people you care about. No
+    dark patterns, no rage feed — just your people.
+  </p>
+
+  <div class="hero__actions">
+    <button mat-flat-button color="primary" class="cta-primary">
+      Create your account
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+
+    <button mat-stroked-button class="cta-secondary">Take a tour</button>
+  </div>
+
+  <div class="hero__people">
+    <div class="avatar-stack">
+      <span class="avatar" *ngFor="let avatar of avatars">{{ avatar }}</span>
+    </div>
+    <span class="people-text"><strong>240k+</strong> people already on Nova</span>
+  </div>
+</div>

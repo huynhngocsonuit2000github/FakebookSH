@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #e0faf4;
+}
+
+.hero {
+  flex: 1;
+  padding: 5px;
+  min-height: 100vh;
+  padding: 48px;
+  background: linear-gradient(135deg, #eef5f3 0%, #f4f8f7 100%);
+  display: flex;
+  align-items: center;
+}
+
+.hero__content {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .hero {
+    padding: 28px 20px 48px;
+    min-height: auto;
+  }
+
+  .hero__content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

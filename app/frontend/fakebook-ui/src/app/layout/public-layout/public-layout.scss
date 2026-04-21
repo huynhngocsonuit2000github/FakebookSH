@@ -2,55 +2,26 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #f8fffd 0%, #f3f7fb 100%);
-  color: #1f2937;
+}
 
-  &__header {
-    padding: 2rem 1.5rem;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid #e5e7eb;
-  }
+.public-layout__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 72px; // same as header height if header is fixed
+}
 
-  &__brand {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+app-footer {
+  flex-shrink: 0;
+}
 
-  &__title {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #111827;
-  }
+app-home {
+  flex: 1;
+  display: block;
+}
 
-  &__subtitle {
-    margin: 0.5rem 0 0;
-    font-size: 1rem;
-    color: #6b7280;
-  }
-
-  &__content {
-    flex: 1;
-    padding: 2rem 1.5rem 3rem;
-  }
-
-  &__content-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 1.25rem;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-  }
-
-  &__footer {
-    padding: 1rem 1.5rem;
-    text-align: center;
-    background: #ffffff;
-    border-top: 1px solid #e5e7eb;
-    color: #6b7280;
-    font-size: 0.95rem;
-  }
+.home-content {
+  flex: 1;
+  min-height: 100%;
+  background: #eef2f5;
 }
