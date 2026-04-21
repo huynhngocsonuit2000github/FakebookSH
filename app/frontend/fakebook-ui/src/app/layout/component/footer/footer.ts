@@ -11,7 +11,7 @@ export class Footer {
   productItems = [
     { label: 'Features', link: '#' },
     { label: 'Community', link: '#' },
-    { label: 'Why Nova', link: '#' },
+    { label: 'Why Fakebook', link: '#' },
   ];
 
   companyItems = [

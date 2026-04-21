@@ -13,6 +13,24 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: #cfe3dd;
+    background: #ffffff;
+    box-shadow: 0 16px 40px rgba(22, 34, 44, 0.08) !important;
+  }
+
+  &:hover .feature-card__icon {
+    background: linear-gradient(135deg, #19b38a, #35d39a);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(25, 179, 138, 0.25);
+  }
 }
 
 .feature-card__icon {
@@ -24,6 +42,11 @@
   background: #dff0eb;
   color: #149b7c;
   margin-bottom: 24px;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 
   mat-icon {
     font-size: 22px;
