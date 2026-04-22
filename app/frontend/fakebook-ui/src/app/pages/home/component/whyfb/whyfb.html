@@ -1,0 +1,26 @@
+<section class="testimonials-section">
+  <div class="container">
+    <p class="eyebrow">LOVED BY EARLY MEMBERS</p>
+    <h2 class="title">A different kind of feed</h2>
+
+    <div class="cards">
+      <mat-card class="testimonial-card" *ngFor="let item of testimonials">
+        <div class="profile">
+          <img [src]="item.avatar" [alt]="item.name" class="avatar" />
+
+          <div>
+            <h3 class="name">{{ item.name }}</h3>
+            <p class="role">{{ item.role }}</p>
+          </div>
+        </div>
+
+        <p class="quote">"{{ item.quote }}"</p>
+
+        <div class="verified">
+          <mat-icon>check_circle</mat-icon>
+          <span>Verified member</span>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</section>
