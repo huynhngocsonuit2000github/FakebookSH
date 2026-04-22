@@ -1,0 +1,24 @@
+<div class="left-panel">
+  <div class="brand">
+    <div class="brand-icon">
+      <mat-icon>diamond</mat-icon>
+    </div>
+
+    <span class="brand-text">
+      <span class="brand-white">Fakebook</span><span class="brand-green">Social</span>
+    </span>
+  </div>
+
+  <div class="left-content">
+    <h1>A calmer corner of the internet, built for the people you actually want to talk to.</h1>
+
+    <div class="community">
+      <div class="avatars">
+        <img *ngFor="let user of users" [src]="user" alt="community member" />
+      </div>
+      <span>240k+ people on Nova</span>
+    </div>
+  </div>
+
+  <div class="copyright">© Fakebook Social</div>
+</div>

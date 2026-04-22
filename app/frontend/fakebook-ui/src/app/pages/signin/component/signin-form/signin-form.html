@@ -1,0 +1,49 @@
+<div class="right-panel">
+  <div class="form-box">
+    <h2>Welcome back</h2>
+    <p class="subtitle">Log in to pick up where you left off.</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field-group">
+        <label>Email</label>
+        <mat-form-field appearance="outline" class="full-width custom-field">
+          <mat-icon matPrefix>mail_outline</mat-icon>
+          <input matInput formControlName="email" placeholder="you@example.com" />
+        </mat-form-field>
+      </div>
+
+      <div class="field-header">
+        <label>Password</label>
+        <a href="#">Forgot?</a>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width custom-field">
+        <mat-icon matPrefix>lock_outline</mat-icon>
+        <input
+          matInput
+          formControlName="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          placeholder="Enter password"
+        />
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button mat-flat-button class="login-btn full-width" type="submit">Log in</button>
+    </form>
+
+    <div class="divider">
+      <span>OR CONTINUE WITH</span>
+    </div>
+
+    <div class="social-buttons">
+      <button mat-stroked-button class="social-btn">Google</button>
+      <button mat-stroked-button class="social-btn">Apple</button>
+    </div>
+
+    <p class="signup-text">New to Nova? <a href="#" routerLink="/signup">Create an account</a></p>
+
+    <a class="back-link" href="#">← Back to home</a>
+  </div>
+</div>

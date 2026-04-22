@@ -16,4 +16,14 @@ export const routes: Routes = [
     component: MainLayout,
     children: [{ path: '', loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed) }],
   },
+
+  // Signin/signup page, with public layout
+  {
+    path: 'signin',
+    loadComponent: () => import('./pages/signin/signin').then((m) => m.Signin),
+  },
+  {
+    path: 'signup',
+    loadComponent: () => import('./pages/signup/signup').then((m) => m.Signup),
+  },
 ];

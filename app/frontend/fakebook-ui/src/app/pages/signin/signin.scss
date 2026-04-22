@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.signin-page {
+  min-height: 100vh;
+  background: #e9ece8;
+}
+
+.signin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+@media (max-width: 992px) {
+  .signin-shell {
+    grid-template-columns: 1fr;
+  }
+}

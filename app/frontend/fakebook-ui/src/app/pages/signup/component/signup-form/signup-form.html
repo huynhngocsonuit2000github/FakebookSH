@@ -1,0 +1,79 @@
+<div class="right-panel">
+  <div class="form-box">
+    <h2>Join Nova Social</h2>
+    <p class="subtitle">Create your account in under a minute.</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="name-row">
+        <div class="field-group">
+          <label>First name</label>
+          <mat-form-field appearance="outline" class="full-width custom-field">
+            <input matInput formControlName="firstName" placeholder="First name" />
+          </mat-form-field>
+        </div>
+
+        <div class="field-group">
+          <label>Last name</label>
+          <mat-form-field appearance="outline" class="full-width custom-field">
+            <input matInput formControlName="lastName" placeholder="Last name" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Username</label>
+        <mat-form-field appearance="outline" class="full-width custom-field">
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <input matInput formControlName="username" placeholder="Username" />
+        </mat-form-field>
+      </div>
+
+      <div class="field-group">
+        <label>Email</label>
+        <mat-form-field appearance="outline" class="full-width custom-field">
+          <mat-icon matPrefix>mail_outline</mat-icon>
+          <input matInput formControlName="email" placeholder="you@example.com" />
+        </mat-form-field>
+      </div>
+
+      <div class="field-group">
+        <label>Password</label>
+        <mat-form-field appearance="outline" class="full-width custom-field">
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="At least 8 characters"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            aria-label="Toggle password visibility"
+          >
+            <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <button mat-flat-button class="signup-btn full-width" type="submit">Create account</button>
+
+      <p class="terms-text">By joining you agree to our Terms and Privacy Policy.</p>
+    </form>
+
+    <div class="divider">
+      <span>OR SIGN UP WITH</span>
+    </div>
+
+    <div class="social-buttons">
+      <button mat-stroked-button class="social-btn" type="button">Google</button>
+      <button mat-stroked-button class="social-btn" type="button">Apple</button>
+    </div>
+
+    <p class="signin-text">Already have an account? <a routerLink="/signin">Log in</a></p>
+
+    <a class="back-link" routerLink="/">← Back to home</a>
+  </div>
+</div>
