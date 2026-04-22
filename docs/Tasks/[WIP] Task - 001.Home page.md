@@ -7,7 +7,7 @@
   - footer [done]
   - intro (hero) [done]
   - features [done]
-  - community
+  - community [done]
   - why Fake
 - combine component into the home page
 
