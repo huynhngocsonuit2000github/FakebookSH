@@ -7,3 +7,5 @@
   - Signin form [done]
   - signup form [done]
 - combine component into the home page [done]
+- Validation for signup form [done]
+- Validation for signin form [done]

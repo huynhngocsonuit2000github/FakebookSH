@@ -6,9 +6,15 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="field-group">
         <label>Email</label>
-        <mat-form-field appearance="outline" class="full-width custom-field">
+        <mat-form-field
+          appearance="outline"
+          class="full-width custom-field"
+          [color]="form.get('email')?.invalid && form.get('email')?.touched ? 'warn' : 'primary'"
+        >
           <mat-icon matPrefix>mail_outline</mat-icon>
           <input matInput formControlName="email" placeholder="you@example.com" />
+          <mat-error *ngIf="form.get('email')?.hasError('required')"> Email is required </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')"> Invalid email format </mat-error>
         </mat-form-field>
       </div>
 
@@ -25,6 +31,10 @@
           [type]="hidePassword ? 'password' : 'text'"
           placeholder="Enter password"
         />
+        <mat-error *ngIf="form.get('password')?.hasError('required')">
+          Password is required
+        </mat-error>
+
         <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
           <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
         </button>
