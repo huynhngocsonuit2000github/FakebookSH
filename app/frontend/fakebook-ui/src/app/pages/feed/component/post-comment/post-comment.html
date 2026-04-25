@@ -1,0 +1,18 @@
+<section class="comment-section">
+  <div class="comment-header">
+    <strong>Comments</strong>
+    <span>{{ comments.length }} replies</span>
+  </div>
+
+  <div class="comment-list">
+    <app-comment-item
+      *ngFor="let comment of comments"
+      [avatar]="comment.avatar"
+      [name]="comment.name"
+      [username]="comment.username"
+      [time]="comment.time"
+      [text]="comment.text"
+      [likes]="comment.likes"
+    ></app-comment-item>
+  </div>
+</section>

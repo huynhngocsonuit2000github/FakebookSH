@@ -1,0 +1,28 @@
+<div class="comment-item">
+  <img class="comment-avatar" [src]="avatar" [alt]="name" />
+
+  <div class="comment-body">
+    <div class="comment-top">
+      <strong>{{ name }}</strong>
+      <span class="comment-username">@{{ username }}</span>
+      <span class="comment-time">· {{ time }}</span>
+    </div>
+
+    <p class="comment-text">{{ text }}</p>
+
+    <div class="comment-actions">
+      <button type="button">
+        <mat-icon>thumb_up</mat-icon>
+        <span>Like</span>
+      </button>
+      <button type="button">
+        <mat-icon>reply</mat-icon>
+        <span>Reply</span>
+      </button>
+      <span *ngIf="likes > 0" class="comment-likes">
+        <mat-icon>favorite</mat-icon>
+        {{ likes }}
+      </span>
+    </div>
+  </div>
+</div>

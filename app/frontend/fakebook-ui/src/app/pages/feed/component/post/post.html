@@ -1,0 +1,81 @@
+<div class="post-card">
+  <div class="post-header">
+    <div class="user-info">
+      <img class="avatar" src="https://i.pravatar.cc/100?img=12" alt="avatar" />
+
+      <div>
+        <div class="name-row">
+          <strong>Jordan Park</strong>
+          <span class="username">@jordanp</span>
+        </div>
+
+        <div class="meta">
+          <span>4h</span>
+          <mat-icon>public</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <button class="icon-btn" type="button">
+      <mat-icon>more_horiz</mat-icon>
+    </button>
+  </div>
+
+  <div class="post-content">
+    <p>
+      Sunrise from the cabin. No notifications, no dashboards — just coffee and a really stubborn
+      fire.
+    </p>
+
+    <div class="hashtags">
+      <span>#weekend</span>
+      <span>#outdoors</span>
+    </div>
+  </div>
+
+  <img
+    class="post-image"
+    src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+    alt="post image"
+  />
+
+  <div class="post-stats">
+    <div class="likes">
+      <span class="like-circle">
+        <mat-icon>favorite</mat-icon>
+      </span>
+      <span>{{ likeCount | number }}</span>
+    </div>
+
+    <div class="stats-right">
+      <span>{{ comments.length }} comments</span>
+      <span>31 shares</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="post-actions">
+    <button type="button" (click)="toggleLike()" [class.liked]="liked">
+      <mat-icon>{{ liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+      <span>Like</span>
+    </button>
+
+    <button type="button" class="action-btn" [class.active]="showComment" (click)="toggleComment()">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <span>Comment</span>
+    </button>
+
+    <button type="button">
+      <mat-icon>share</mat-icon>
+      <span>Share</span>
+    </button>
+
+    <button type="button">
+      <mat-icon>bookmark_border</mat-icon>
+      <span>Save</span>
+    </button>
+  </div>
+
+  <app-post-comment *ngIf="showComment" [comments]="comments"></app-post-comment>
+</div>
