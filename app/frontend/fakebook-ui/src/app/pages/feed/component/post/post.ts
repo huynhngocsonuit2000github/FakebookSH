@@ -1,7 +1,17 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PostComment } from '../post-comment/post-comment';
+import { FeedPost } from '../../feed';
+
+interface CommentData {
+  avatar: string;
+  name: string;
+  username: string;
+  time: string;
+  text: string;
+  likes: number;
+}
 
 @Component({
   selector: 'app-post',
@@ -10,50 +20,27 @@ import { PostComment } from '../post-comment/post-comment';
   styleUrl: './post.scss',
 })
 export class Post {
-  liked = false;
-  likeCount = 1284;
+  @Input() post: FeedPost = {
+    author: 'Unknown',
+    username: 'unknown',
+    avatar: '/assets/design/4.post-comment-avatar.jpg',
+    time: '0m',
+    visibility: 'public',
+    content: '',
+    hashtags: [],
+    image: '',
+    likeCount: 0,
+    shareCount: 0,
+    comments: [],
+  };
 
-  comments = [
-    {
-      avatar: '/assets/design/4.post-comment-avatar.jpg',
-      name: 'Emma Carter',
-      username: 'emmacarter',
-      time: '15 min',
-      text: 'Loved the cabin view — this is exactly the kind of weekend reset I need.',
-      likes: 12,
-    },
-    {
-      avatar: '/assets/design/4.post-comment-avatar.jpg',
-      name: 'Noah Ellis',
-      username: 'noahellis',
-      time: '17 min',
-      text: 'That fire looks perfect. Wish I was there too.',
-      likes: 2,
-    },
-    {
-      avatar: '/assets/design/4.post-comment-avatar.jpg',
-      name: 'Mia Reynolds',
-      username: 'miareynolds',
-      time: '3 min',
-      text: 'The light and colors are unreal — great shot!',
-      likes: 0,
-    },
-    {
-      avatar: '/assets/design/4.post-comment-avatar.jpg',
-      name: 'Liam Brooks',
-      username: 'liambrooks',
-      time: '1 min',
-      text: 'That trail looks like a hidden gem. I need the location.',
-      likes: 5,
-    },
-  ];
+  liked = false;
+  showComment = false;
 
   toggleLike() {
     this.liked = !this.liked;
-    this.likeCount += this.liked ? 1 : -1;
+    this.post.likeCount += this.liked ? 1 : -1;
   }
-
-  showComment = false;
 
   toggleComment() {
     this.showComment = !this.showComment;

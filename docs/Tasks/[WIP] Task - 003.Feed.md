@@ -6,4 +6,4 @@
   - post create component [done]
   - post create modal component [done]
   - post component [done]
-  - mock up feed data
+  - mock up feed data [done]

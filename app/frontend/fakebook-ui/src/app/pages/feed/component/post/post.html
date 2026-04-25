@@ -1,17 +1,17 @@
 <div class="post-card">
   <div class="post-header">
     <div class="user-info">
-      <img class="avatar" src="https://i.pravatar.cc/100?img=12" alt="avatar" />
+      <img class="avatar" [src]="post.avatar" [alt]="post.author" />
 
       <div>
         <div class="name-row">
-          <strong>Jordan Park</strong>
-          <span class="username">@jordanp</span>
+          <strong>{{ post.author }}</strong>
+          <span class="username">@{{ post.username }}</span>
         </div>
 
         <div class="meta">
-          <span>4h</span>
-          <mat-icon>public</mat-icon>
+          <span>{{ post.time }}</span>
+          <mat-icon>{{ post.visibility === 'public' ? 'public' : 'people' }}</mat-icon>
         </div>
       </div>
     </div>
@@ -22,34 +22,26 @@
   </div>
 
   <div class="post-content">
-    <p>
-      Sunrise from the cabin. No notifications, no dashboards — just coffee and a really stubborn
-      fire.
-    </p>
+    <p>{{ post.content }}</p>
 
     <div class="hashtags">
-      <span>#weekend</span>
-      <span>#outdoors</span>
+      <span *ngFor="let tag of post.hashtags">{{ tag }}</span>
     </div>
   </div>
 
-  <img
-    class="post-image"
-    src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
-    alt="post image"
-  />
+  <img class="post-image" [src]="post.image" alt="post image" />
 
   <div class="post-stats">
     <div class="likes">
       <span class="like-circle">
         <mat-icon>favorite</mat-icon>
       </span>
-      <span>{{ likeCount | number }}</span>
+      <span>{{ post.likeCount | number }}</span>
     </div>
 
     <div class="stats-right">
-      <span>{{ comments.length }} comments</span>
-      <span>31 shares</span>
+      <span>{{ post.comments.length }} comments</span>
+      <span>{{ post.shareCount }} shares</span>
     </div>
   </div>
 
@@ -77,5 +69,5 @@
     </button>
   </div>
 
-  <app-post-comment *ngIf="showComment" [comments]="comments"></app-post-comment>
+  <app-post-comment *ngIf="showComment" [comments]="post.comments"></app-post-comment>
 </div>
