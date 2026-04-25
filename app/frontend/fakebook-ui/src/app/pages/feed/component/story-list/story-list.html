@@ -1,0 +1,8 @@
+<div class="stories-wrapper">
+  <div class="create-story">
+    <button class="add-btn">+</button>
+    <span>Create story</span>
+  </div>
+
+  <app-story *ngFor="let story of stories" [story]="story"> </app-story>
+</div>

@@ -1,4 +1,6 @@
 - Create layout for auth user [done]
   - header [done]
   - left [done]
-- Feed [done]
+- Feed
+  - story and story list component [done]
+  - post component

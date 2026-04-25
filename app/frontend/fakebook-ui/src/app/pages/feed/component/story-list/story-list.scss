@@ -1,0 +1,54 @@
+.stories-wrapper {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 12px;
+  max-width: 100%;
+}
+
+.stories-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.stories-wrapper::-webkit-scrollbar-thumb {
+  background: #cfd8dc;
+  border-radius: 10px;
+}
+
+.create-story {
+  position: relative;
+  min-width: 112px;
+  height: 176px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  background: #f6fbfa;
+  border: 1px solid #e0eeee;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.add-btn {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #1abc9c;
+  color: white;
+  font-size: 26px;
+  line-height: 36px;
+  cursor: pointer;
+}
+
+.create-story span {
+  color: #111;
+  font-size: 13px;
+  font-weight: 600;
+}
