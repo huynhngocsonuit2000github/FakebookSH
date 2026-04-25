@@ -1,0 +1,43 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Create a post</h2>
+      <button type="button" class="close-btn" (click)="onClose()">×</button>
+    </div>
+
+    <div class="user-row">
+      <img class="avatar" [src]="avatar" alt="avatar" />
+
+      <div>
+        <div class="name">Son Huynh</div>
+        <div class="privacy">👥 Friends</div>
+      </div>
+    </div>
+
+    <textarea
+      [(ngModel)]="content"
+      placeholder="Share something with your friends..."
+      maxlength="500"
+    >
+    </textarea>
+
+    <div class="add-box">
+      <span>Add to your post</span>
+
+      <div class="icons">
+        <button type="button" class="photo"><mat-icon>image</mat-icon></button>
+        <button type="button" class="feeling"><mat-icon>sentiment_satisfied</mat-icon></button>
+        <button type="button" class="location"><mat-icon>location_on</mat-icon></button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>{{ content.length }}/500</span>
+
+      <button type="button" class="post-btn" [disabled]="!content.trim()" (click)="submitPost()">
+        <mat-icon>send</mat-icon>
+        Post
+      </button>
+    </div>
+  </div>
+</div>

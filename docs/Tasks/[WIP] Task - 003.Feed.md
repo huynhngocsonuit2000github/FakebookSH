@@ -3,4 +3,6 @@
   - left [done]
 - Feed
   - story and story list component [done]
+  - post create component [done]
+  - post create modal component [done]
   - post component

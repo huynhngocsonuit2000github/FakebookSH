@@ -9,17 +9,16 @@
   </div>
 
   <div class="actions">
-    <a routerLink="/feed" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><mat-icon>home</mat-icon></a>
+    <a routerLink="/feed" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon>home</mat-icon></a
+    >
     <a routerLink="/explore" routerLinkActive="active"><mat-icon>explore</mat-icon></a>
     <a routerLink="/messages" routerLinkActive="active"><mat-icon>chat</mat-icon></a>
     <a routerLink="/notifications" routerLinkActive="active"><mat-icon>notifications</mat-icon></a>
 
     <div class="user-menu">
       <button class="avatar-button" type="button" (click)="toggleUserMenu()">
-        <img
-          src="https://media.vogue.co.uk/photos/602503e953a6c957c223e1c2/1:1/w_1079,h_1080,c_limit/65422624_362861021078977_3034176141535337881_n.jpg"
-          alt="User avatar"
-        />
+        <img src="/assets/design/1.avatar.webp" alt="User avatar" />
       </button>
 
       <app-user-menu *ngIf="userMenuOpen"></app-user-menu>
