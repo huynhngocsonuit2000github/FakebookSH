@@ -1,0 +1,22 @@
+<section class="suggested-card">
+  <div class="suggested-header">
+    <h3>Suggested for you</h3>
+    <button type="button" routerLink="/friends">See all</button>
+  </div>
+
+  <div class="friend-list">
+    <div class="friend-item" *ngFor="let friend of friends">
+      <img [src]="friend.avatar" [alt]="friend.name" />
+
+      <div class="friend-info">
+        <strong>{{ friend.name }}</strong>
+        <span>{{ friend.mutualFriends }} mutual friends</span>
+      </div>
+
+      <button class="follow-btn" type="button">
+        <mat-icon>person_add</mat-icon>
+        Follow
+      </button>
+    </div>
+  </div>
+</section>

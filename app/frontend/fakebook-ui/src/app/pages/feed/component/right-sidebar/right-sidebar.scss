@@ -1,0 +1,21 @@
+.right-sidebar {
+  width: 320px;
+  height: calc(100vh - 72px);
+  position: sticky;
+  top: 72px;
+  padding: 16px;
+  overflow-y: hidden;
+}
+
+.right-sidebar:hover {
+  overflow-y: auto;
+}
+
+.right-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.right-sidebar::-webkit-scrollbar-thumb {
+  background: #cbd5d1;
+  border-radius: 999px;
+}

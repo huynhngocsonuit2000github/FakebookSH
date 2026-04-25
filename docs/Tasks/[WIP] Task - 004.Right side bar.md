@@ -1,0 +1,2 @@
+- Create right side bar
+  - suggested fiend component [done]

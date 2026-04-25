@@ -1,9 +1,15 @@
-<div>
-  <app-story-list></app-story-list>
+<div class="feed-page">
+  <div class="feed-center">
+    <app-story-list></app-story-list>
 
-  <app-post-create></app-post-create>
+    <app-post-create></app-post-create>
 
-  <ng-container *ngFor="let post of posts">
-    <app-post [post]="post"></app-post>
-  </ng-container>
+    <ng-container *ngFor="let post of posts">
+      <app-post [post]="post"></app-post>
+    </ng-container>
+  </div>
+
+  <aside class="feed-right-sidebar">
+    <app-right-sidebar></app-right-sidebar>
+  </aside>
 </div>

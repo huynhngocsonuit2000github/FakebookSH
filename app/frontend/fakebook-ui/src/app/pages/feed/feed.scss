@@ -1,0 +1,34 @@
+.feed-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 28px;
+  width: 100%;
+}
+
+.feed-center {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  align-items: stretch;
+}
+
+.feed-right-sidebar {
+  position: sticky;
+  top: 110px;
+  align-self: start;
+}
+
+@media (max-width: 1200px) {
+  .feed-page {
+    grid-template-columns: 1fr;
+  }
+
+  .feed-center {
+    gap: 16px;
+  }
+
+  .feed-right-sidebar {
+    display: none;
+  }
+}

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { StoryList } from './component/story-list/story-list';
 import { PostCreate } from './component/post-create/post-create';
 import { Post } from './component/post/post';
+import { RightSidebar } from './component/right-sidebar/right-sidebar';
 
 interface CommentData {
   avatar: string;
@@ -29,7 +30,7 @@ export interface FeedPost {
 
 @Component({
   selector: 'app-feed',
-  imports: [CommonModule, StoryList, PostCreate, Post],
+  imports: [CommonModule, StoryList, PostCreate, Post, RightSidebar],
   templateUrl: './feed.html',
   styleUrl: './feed.scss',
 })
