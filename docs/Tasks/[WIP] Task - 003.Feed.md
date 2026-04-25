@@ -1,0 +1,4 @@
+- Create layout for auth user [done]
+  - header [done]
+  - left [done]
+- Feed [done]

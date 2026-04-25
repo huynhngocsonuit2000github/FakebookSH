@@ -16,6 +16,72 @@ export const routes: Routes = [
     component: MainLayout,
     children: [{ path: '', loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed) }],
   },
+  {
+    path: 'profile',
+    component: MainLayout,
+    children: [
+      { path: '', loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile) },
+    ],
+  },
+  {
+    path: 'friends',
+    component: MainLayout,
+    children: [
+      { path: '', loadComponent: () => import('./pages/friends/friends').then((m) => m.Friends) },
+    ],
+  },
+  {
+    path: 'saved',
+    component: MainLayout,
+    children: [
+      { path: '', loadComponent: () => import('./pages/saved/saved').then((m) => m.Saved) },
+    ],
+  },
+  {
+    path: 'messages',
+    component: MainLayout,
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/messages/messages').then((m) => m.Messages),
+      },
+    ],
+  },
+  {
+    path: 'notifications',
+    component: MainLayout,
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/notifications/notifications').then((m) => m.Notifications),
+      },
+    ],
+  },
+  {
+    path: 'explore',
+    component: MainLayout,
+    children: [
+      { path: '', loadComponent: () => import('./pages/explore/explore').then((m) => m.Explore) },
+    ],
+  },
+  {
+    path: 'media',
+    component: MainLayout,
+    children: [
+      { path: '', loadComponent: () => import('./pages/media/media').then((m) => m.Media) },
+    ],
+  },
+  {
+    path: 'settings',
+    component: MainLayout,
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
+      },
+    ],
+  },
 
   // Signin/signup page, with public layout
   {

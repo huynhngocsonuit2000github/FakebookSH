@@ -1,20 +1,28 @@
-<header class="topbar">
-  <div class="topbar__left">
-    <div class="logo-icon">
-      <span class="diamond">◈</span>
-    </div>
-
-    <div class="logo-text">
-      <span class="logo-text__nova">Fakebook</span><span class="logo-text__social">Social</span>
-    </div>
+<header class="header">
+  <div class="brand">
+    <div class="brand-icon"><mat-icon>diamond</mat-icon></div>
+    <div class="brand-name">Fake<span>book</span></div>
   </div>
 
-  <nav class="topbar__center">
-    <a class="nav-link" *ngFor="let menu of menus" [href]="menu.link">{{ menu.label }}</a>
-  </nav>
+  <div class="search">
+    <input type="text" placeholder="Search Fakebook" />
+  </div>
 
-  <div class="topbar__right">
-    <a matButton href="#" class="login-link" routerLink="/signin">Log in</a>
-    <button class="join-btn">Join Fakebook</button>
+  <div class="actions">
+    <a routerLink="/feed" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><mat-icon>home</mat-icon></a>
+    <a routerLink="/explore" routerLinkActive="active"><mat-icon>explore</mat-icon></a>
+    <a routerLink="/messages" routerLinkActive="active"><mat-icon>chat</mat-icon></a>
+    <a routerLink="/notifications" routerLinkActive="active"><mat-icon>notifications</mat-icon></a>
+
+    <div class="user-menu">
+      <button class="avatar-button" type="button" (click)="toggleUserMenu()">
+        <img
+          src="https://media.vogue.co.uk/photos/602503e953a6c957c223e1c2/1:1/w_1079,h_1080,c_limit/65422624_362861021078977_3034176141535337881_n.jpg"
+          alt="User avatar"
+        />
+      </button>
+
+      <app-user-menu *ngIf="userMenuOpen"></app-user-menu>
+    </div>
   </div>
 </header>

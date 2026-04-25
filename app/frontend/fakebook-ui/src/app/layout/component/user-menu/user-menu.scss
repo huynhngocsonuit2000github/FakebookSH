@@ -1,0 +1,46 @@
+.avatar-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  width: 220px;
+  background: #ffffff;
+  border: 1px solid #edf5f4;
+  box-shadow: 0 20px 40px rgba(38, 57, 55, 0.12);
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.avatar-menu__header {
+  padding: 16px 18px;
+  border-bottom: 1px solid #edf5f4;
+}
+
+.avatar-menu__header strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.avatar-menu__header span {
+  font-size: 13px;
+  color: #6b7c7c;
+}
+
+.avatar-menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  color: #203c3a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.avatar-menu a:hover {
+  background: #eef7f5;
+}
+
+.avatar-menu mat-icon {
+  font-size: 18px;
+}
