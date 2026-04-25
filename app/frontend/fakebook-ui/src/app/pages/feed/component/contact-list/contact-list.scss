@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+.contacts-card {
+  width: 89%;
+  padding: 22px 21px 21px;
+  background: #ffffff;
+  border: 1px solid #dce9e7;
+  border-radius: 16px;
+}
+
+.contacts-title {
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.2;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}

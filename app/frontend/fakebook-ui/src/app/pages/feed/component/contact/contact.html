@@ -1,0 +1,23 @@
+<div class="contact">
+  <div class="avatar-wrapper">
+    <img
+      *ngIf="avatarUrl; else fallbackAvatar"
+      class="avatar"
+      [src]="avatarUrl"
+      [alt]="name"
+      loading="lazy"
+    />
+
+    <ng-template #fallbackAvatar>
+      <div class="avatar fallback-avatar">
+        {{ fallbackEmoji }}
+      </div>
+    </ng-template>
+
+    <span class="status-dot" [class.is-online]="online" aria-hidden="true"></span>
+  </div>
+
+  <span class="contact-name">
+    {{ name }}
+  </span>
+</div>

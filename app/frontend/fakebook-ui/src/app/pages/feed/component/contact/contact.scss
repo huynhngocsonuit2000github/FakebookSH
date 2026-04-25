@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 7px 0;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #bdefff;
+}
+
+.fallback-avatar {
+  display: grid;
+  place-items: center;
+  font-size: 21px;
+}
+
+.status-dot {
+  position: absolute;
+  right: -1px;
+  bottom: 2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #94a3b8;
+  border: 2px solid #ffffff;
+}
+
+.status-dot.is-online {
+  background: #23c77b;
+}
+
+.contact-name {
+  font-size: 14px;
+  font-weight: 650;
+  color: #101820;
+  letter-spacing: -0.01em;
+}

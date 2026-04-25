@@ -1,4 +1,4 @@
 - Create right side bar
   - suggested fiend component [done]
   - sponsor component [done]
-  - contact list, contact component [wip]
+  - contact list, contact component [done]

@@ -1,0 +1,13 @@
+<section class="contacts-card">
+  <h2 class="contacts-title">Contacts</h2>
+
+  <div class="contacts-list">
+    <app-contact
+      *ngFor="let contact of contacts"
+      [name]="contact.name"
+      [avatarUrl]="contact.avatarUrl || ''"
+      [fallbackEmoji]="contact.fallbackEmoji"
+      [online]="contact.online"
+    ></app-contact>
+  </div>
+</section>
