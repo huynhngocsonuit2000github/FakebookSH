@@ -1,0 +1,15 @@
+<section class="trending-card">
+  <div class="trending-header">
+    <mat-icon>trending_up</mat-icon>
+    <span>Trending now</span>
+  </div>
+
+  <div class="trending-list">
+    <button class="trending-item" type="button" *ngFor="let topic of topics">
+      <div>
+        <div class="topic-title">{{ topic.tag }}</div>
+        <div class="topic-count">{{ topic.posts }}</div>
+      </div>
+    </button>
+  </div>
+</section>

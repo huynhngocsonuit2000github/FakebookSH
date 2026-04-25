@@ -1,0 +1,76 @@
+.trending-card {
+  background: #ffffff;
+  border: 1px solid #e4ece9;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.trending-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-weight: 700;
+  color: #111827;
+
+  mat-icon {
+    color: #10b981;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.trending-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.trending-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 12px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    .topic-title,
+    .topic-count,
+    .item-icon {
+      color: #10b981;
+    }
+  }
+}
+
+.topic-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f172a;
+  transition: color 0.2s ease;
+}
+
+.topic-count {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+  transition: color 0.2s ease;
+}
+
+.item-icon {
+  color: #94a3b8;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.trending-item:hover .item-icon {
+  opacity: 1;
+}

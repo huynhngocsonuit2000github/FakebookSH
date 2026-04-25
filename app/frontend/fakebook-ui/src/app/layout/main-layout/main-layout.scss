@@ -17,6 +17,13 @@
   align-items: start;
 }
 
+app-left-sidebar {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  display: block;
+}
+
 .outlet-content {
   min-width: 0;
 }
