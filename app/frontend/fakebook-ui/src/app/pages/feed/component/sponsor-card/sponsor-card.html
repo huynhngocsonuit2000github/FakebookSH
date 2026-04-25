@@ -1,0 +1,13 @@
+<article class="sponsor-card">
+  <div class="sponsor-image" role="img" [attr.aria-label]="imageAlt">
+    <img *ngIf="imageUrl" [src]="imageUrl" [alt]="imageAlt" loading="lazy" />
+  </div>
+
+  <h3 class="sponsor-title">
+    {{ title }}
+  </h3>
+
+  <p class="sponsor-description">
+    {{ description }}
+  </p>
+</article>

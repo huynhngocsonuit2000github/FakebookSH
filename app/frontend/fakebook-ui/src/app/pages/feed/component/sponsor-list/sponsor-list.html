@@ -1,0 +1,11 @@
+<section class="sponsor-list" aria-label="Sponsored">
+  <p class="sponsor-list-label">Sponsored</p>
+
+  <app-sponsor-card
+    *ngFor="let sponsor of sponsors"
+    [title]="sponsor.title"
+    [description]="sponsor.description"
+    [imageUrl]="sponsor.imageUrl"
+    [imageAlt]="sponsor.imageAlt"
+  ></app-sponsor-card>
+</section>
