@@ -1,0 +1,45 @@
+@FakebookAuth_HostAddress = https://localhost:7001
+@accessToken = paste-access-token-here
+@refreshToken = paste-refresh-token-here
+
+### Health
+GET {{FakebookAuth_HostAddress}}/health
+
+### Register
+POST {{FakebookAuth_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "userName": "testuser",
+  "password": "Password123!"
+}
+
+### Login
+POST {{FakebookAuth_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "emailOrUserName": "test@example.com",
+  "password": "Password123!"
+}
+
+### Current user
+GET {{FakebookAuth_HostAddress}}/api/auth/me
+Authorization: Bearer {{accessToken}}
+
+### Refresh token
+POST {{FakebookAuth_HostAddress}}/api/auth/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### Logout
+POST {{FakebookAuth_HostAddress}}/api/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}

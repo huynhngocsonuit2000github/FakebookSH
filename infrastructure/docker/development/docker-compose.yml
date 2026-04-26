@@ -1,0 +1,15 @@
+services:
+  auth-db:
+    image: postgres:17
+    container_name: fakebook-auth-db
+    environment:
+      POSTGRES_DB: fakebook_auth
+      POSTGRES_USER: fb_user
+      POSTGRES_PASSWORD: fb_user_123
+    ports:
+      - "5433:5432"
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+
+volumes:
+  auth_db_data:

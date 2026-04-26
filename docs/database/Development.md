@@ -1,0 +1,4 @@
+- Auth database
+  - Container: fakebook-auth-db
+  - Port: 5433
+  - Credential: fb_user;fb_user_123
