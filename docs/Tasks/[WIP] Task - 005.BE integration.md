@@ -57,11 +57,11 @@ Testing
 
 ### Auth Service
 
-- [ ] Register
-- [ ] Login
-- [ ] Refresh token
-- [ ] Logout
-- [ ] Get current user
+- [x] Register
+- [x] Login
+- [x] Refresh token
+- [x] Logout
+- [x] Get current user
 
 ### User Service
 
