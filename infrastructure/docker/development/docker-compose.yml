@@ -4,9 +4,13 @@ services:
     container_name: fakebook-auth-api
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
-      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_URLS: https://+:8080
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/fakebook-auth.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: fakebook-auth123
     ports:
       - "6001:8080"
+    volumes:
+      - ./../certs:/https:ro
     depends_on:
       auth-db:
         condition: service_healthy

@@ -12,3 +12,9 @@
 
 - cd to root
   docker compose -f infrastructure\docker\development\docker-compose.yml up -d
+
+# Generate the certifate for service for development only
+
+- cd to root (the password should be filename + 123)
+  dotnet dev-certs https -ep infrastructure\docker\certs\fakebook-auth.pfx -p fakebook-auth123
+  dotnet dev-certs https --trust

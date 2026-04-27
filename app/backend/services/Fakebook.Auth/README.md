@@ -179,5 +179,5 @@ After this works locally, add features in this order:
 3. Add correlation ID middleware + correlation delegating handler. [done]
 4. Add centralized exception handling. [done]
 5. Add Dockerfile for the API. [done]
-6. HTTPS for serice
+6. HTTPS for serice [done]
 7. Add message broker events such as `UserRegistered`.
