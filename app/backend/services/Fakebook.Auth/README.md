@@ -182,4 +182,4 @@ After this works locally, add features in this order:
 6. HTTPS for serice [done]
 7. Add message broker events such as `UserRegistered`.
    1. Message publisher [done]
-   2. Message consumer
+   2. Message consumer [done]

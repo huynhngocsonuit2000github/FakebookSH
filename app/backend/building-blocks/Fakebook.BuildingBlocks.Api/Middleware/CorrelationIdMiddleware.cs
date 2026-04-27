@@ -1,3 +1,4 @@
+using Fakebook.BuildingBlocks.Application.Abstractions.Cores;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -9,39 +10,31 @@ public sealed class CorrelationIdMiddleware
 
     private readonly RequestDelegate _next;
     private readonly ILogger<CorrelationIdMiddleware> _logger;
+    private readonly ICorrelationIdProvider _correlationIdProvider;
 
     public CorrelationIdMiddleware(
         RequestDelegate next,
-        ILogger<CorrelationIdMiddleware> logger)
+        ILogger<CorrelationIdMiddleware> logger,
+        ICorrelationIdProvider correlationIdProvider)
     {
         _next = next;
         _logger = logger;
+        _correlationIdProvider = correlationIdProvider;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var correlationId = GetOrCreateCorrelationId(context);
+        var correlationId = _correlationIdProvider.GetOrCreateAsString();
 
         context.TraceIdentifier = correlationId;
         context.Response.Headers[HeaderName] = correlationId;
 
         using (_logger.BeginScope(new Dictionary<string, object>
-               {
-                   ["CorrelationId"] = correlationId
-               }))
+        {
+            ["CorrelationId"] = correlationId
+        }))
         {
             await _next(context);
         }
-    }
-
-    private static string GetOrCreateCorrelationId(HttpContext context)
-    {
-        if (context.Request.Headers.TryGetValue(HeaderName, out var correlationId) &&
-            !string.IsNullOrWhiteSpace(correlationId))
-        {
-            return correlationId.ToString();
-        }
-
-        return Guid.NewGuid().ToString("N");
     }
 }

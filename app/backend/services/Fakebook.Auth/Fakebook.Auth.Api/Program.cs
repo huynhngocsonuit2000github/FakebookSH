@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Custom service registrations
+builder.Services.AddFakebookCorrelationIdProvider();
 builder.Services.AddFakebookCorrelationIdDelegatingHandler();
 builder.Services.AddDownStreamApiClientWithCorrelationIdHandler(builder.Configuration);
 builder.Services.AddAuthInfrastructure(builder.Configuration);

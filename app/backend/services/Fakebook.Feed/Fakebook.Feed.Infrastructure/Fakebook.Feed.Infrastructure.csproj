@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fakebook.Feed.Domain\Fakebook.Feed.Domain.csproj" />
+    <ProjectReference Include="..\Fakebook.Feed.Application\Fakebook.Feed.Application.csproj" />
+    <ProjectReference Include="..\..\..\building-blocks\Fakebook.BuildingBlocks.Infrastructure\Fakebook.BuildingBlocks.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

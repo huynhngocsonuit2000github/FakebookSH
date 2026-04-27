@@ -75,7 +75,7 @@ public static class InfrastructureServiceCollectionExtensions
             });
         });
 
-        services.AddScoped<IMessagePublisher, MessagePublisher>();
+        services.AddScoped<IMessagePublisher, MessagePublisherBase>();
 
         return services;
     }

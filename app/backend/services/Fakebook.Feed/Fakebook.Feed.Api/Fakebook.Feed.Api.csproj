@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fakebook.Feed.Application\Fakebook.Feed.Application.csproj" />
+    <ProjectReference Include="..\Fakebook.Feed.Infrastructure\Fakebook.Feed.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\building-blocks\Fakebook.BuildingBlocks.Api\Fakebook.BuildingBlocks.Api.csproj" />
+  </ItemGroup>
+
+</Project>
