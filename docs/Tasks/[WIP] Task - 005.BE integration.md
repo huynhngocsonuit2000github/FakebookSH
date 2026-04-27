@@ -49,10 +49,10 @@ Testing
 
 ### BFF
 
-- [ ] Signup API
-- [ ] Login API
-- [ ] Logout API
-- [ ] Get current user (`/me`)
+- [x] Signup API
+- [x] Login API
+- [x] Logout API
+- [x] Get current user (`/me`)
 - [ ] Home feed API
 
 ### Auth Service

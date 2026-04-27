@@ -1,0 +1,20 @@
+@Fakebook.Bff.Api_HostAddress = https://localhost:5000
+
+GET {{Fakebook.Bff.Api_HostAddress}}/health
+Accept: application/json
+
+###
+
+POST {{Fakebook.Bff.Api_HostAddress}}/api/bff/auth/login
+Content-Type: application/json
+
+{
+  "emailOrUserName": "demo@fakebook.local",
+  "password": "P@ssw0rd!"
+}
+
+###
+
+GET {{Fakebook.Bff.Api_HostAddress}}/api/bff/auth/me
+Authorization: Bearer {{access_token}}
+Accept: application/json
