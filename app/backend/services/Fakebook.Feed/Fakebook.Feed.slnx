@@ -1,9 +1,11 @@
 <Solution>
-  <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Api/Fakebook.BuildingBlocks.Api.csproj" />
-  <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Application/Fakebook.BuildingBlocks.Application.csproj" />
-  <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Domain/Fakebook.BuildingBlocks.Domain.csproj" />
-  <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Infrastructure/Fakebook.BuildingBlocks.Infrastructure.csproj" />
-  <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Messaging/Fakebook.BuildingBlocks.Messaging.csproj" />
+  <Folder Name="/Cores/">
+    <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Api/Fakebook.BuildingBlocks.Api.csproj" />
+    <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Application/Fakebook.BuildingBlocks.Application.csproj" />
+    <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Domain/Fakebook.BuildingBlocks.Domain.csproj" />
+    <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Infrastructure/Fakebook.BuildingBlocks.Infrastructure.csproj" />
+    <Project Path="../../building-blocks/Fakebook.BuildingBlocks.Messaging/Fakebook.BuildingBlocks.Messaging.csproj" />
+  </Folder>
   <Project Path="Fakebook.Feed.Api/Fakebook.Feed.Api.csproj" />
   <Project Path="Fakebook.Feed.Application/Fakebook.Feed.Application.csproj" />
   <Project Path="Fakebook.Feed.Domain/Fakebook.Feed.Domain.csproj" />

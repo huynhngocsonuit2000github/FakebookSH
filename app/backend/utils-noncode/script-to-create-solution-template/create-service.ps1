@@ -13,16 +13,21 @@ dotnet new classlib -n "$solutionName.Application" -o "$serviceRoot/$solutionNam
 dotnet new classlib -n "$solutionName.Domain" -o "$serviceRoot/$solutionName.Domain"
 dotnet new classlib -n "$solutionName.Infrastructure" -o "$serviceRoot/$solutionName.Infrastructure"
 
+# Add service projects at solution root
 dotnet sln "$serviceRoot/$solutionName.slnx" add `
   "$serviceRoot/$solutionName.Api/$solutionName.Api.csproj" `
   "$serviceRoot/$solutionName.Application/$solutionName.Application.csproj" `
   "$serviceRoot/$solutionName.Domain/$solutionName.Domain.csproj" `
-  "$serviceRoot/$solutionName.Infrastructure/$solutionName.Infrastructure.csproj" `
+  "$serviceRoot/$solutionName.Infrastructure/$solutionName.Infrastructure.csproj"
+
+# Add BuildingBlocks projects inside Cores solution folder
+dotnet sln "$serviceRoot/$solutionName.slnx" add `
   "building-blocks/Fakebook.BuildingBlocks.Api/Fakebook.BuildingBlocks.Api.csproj" `
   "building-blocks/Fakebook.BuildingBlocks.Application/Fakebook.BuildingBlocks.Application.csproj" `
   "building-blocks/Fakebook.BuildingBlocks.Domain/Fakebook.BuildingBlocks.Domain.csproj" `
   "building-blocks/Fakebook.BuildingBlocks.Messaging/Fakebook.BuildingBlocks.Messaging.csproj" `
-  "building-blocks/Fakebook.BuildingBlocks.Infrastructure/Fakebook.BuildingBlocks.Infrastructure.csproj"
+  "building-blocks/Fakebook.BuildingBlocks.Infrastructure/Fakebook.BuildingBlocks.Infrastructure.csproj" `
+  --solution-folder "Cores"
 
 dotnet add "$serviceRoot/$solutionName.Application/$solutionName.Application.csproj" reference `
   "$serviceRoot/$solutionName.Domain/$solutionName.Domain.csproj" `
