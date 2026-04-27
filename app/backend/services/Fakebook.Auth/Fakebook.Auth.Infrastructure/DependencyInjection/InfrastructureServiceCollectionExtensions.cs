@@ -1,4 +1,3 @@
-using System.Text;
 using Fakebook.Auth.Application.Auth;
 using Fakebook.Auth.Application.Boundary.Repositories;
 using Fakebook.Auth.Application.Boundary.Security;
@@ -6,12 +5,16 @@ using Fakebook.Auth.Infrastructure.Persistence;
 using Fakebook.Auth.Infrastructure.Persistence.Repositories;
 using Fakebook.Auth.Infrastructure.Security;
 using Fakebook.BuildingBlocks.Application.Abstractions.Clock;
+using Fakebook.BuildingBlocks.Application.Messaging;
 using Fakebook.BuildingBlocks.Infrastructure.Clock;
+using Fakebook.BuildingBlocks.Infrastructure.Messaging;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Fakebook.Auth.Infrastructure.DependencyInjection;
 
@@ -57,6 +60,22 @@ public static class InfrastructureServiceCollectionExtensions
             });
 
         services.AddAuthorization();
+
+        services.AddMassTransit(config =>
+        {
+            config.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(configuration["MessageBroker:Host"], "/", h =>
+                {
+                    h.Username(configuration["MessageBroker:Username"]!);
+                    h.Password(configuration["MessageBroker:Password"]!);
+                });
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
+        services.AddScoped<IMessagePublisher, MessagePublisher>();
 
         return services;
     }

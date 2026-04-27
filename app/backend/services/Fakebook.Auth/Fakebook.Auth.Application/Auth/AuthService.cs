@@ -4,6 +4,8 @@ using Fakebook.Auth.Domain.Entities;
 using Fakebook.BuildingBlocks.Application.Abstractions.Clock;
 using Fakebook.BuildingBlocks.Application.Common.Errors;
 using Fakebook.BuildingBlocks.Application.Common.Results;
+using Fakebook.BuildingBlocks.Application.Messaging;
+using Fakebook.BuildingBlocks.Messaging.Events;
 
 namespace Fakebook.Auth.Application.Auth;
 
@@ -14,19 +16,22 @@ public sealed class AuthService : IAuthService
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IPasswordService _passwordService;
     private readonly ITokenService _tokenService;
+    private readonly IMessagePublisher _messagePublisher;
 
     public AuthService(
         IUserRepository userRepository,
         IRefreshTokenRepository refreshTokenRepository,
         IDateTimeProvider dateTimeProvider,
         IPasswordService passwordService,
-        ITokenService tokenService)
+        ITokenService tokenService,
+        IMessagePublisher messagePublisher)
     {
         _userRepository = userRepository;
         _refreshTokenRepository = refreshTokenRepository;
         _dateTimeProvider = dateTimeProvider;
         _passwordService = passwordService;
         _tokenService = tokenService;
+        _messagePublisher = messagePublisher;
     }
 
     public async Task<Result<AuthResponse>> RegisterAsync(
@@ -54,6 +59,14 @@ public sealed class AuthService : IAuthService
         var response = await CreateAuthResponseAsync(newUser);
 
         await _userRepository.SaveChangesAsync(cancellationToken);
+
+        await _messagePublisher.PublishAsync(
+            new UserRegisteredIntegrationEvent(
+                newUser.Id,
+                newUser.Email,
+                newUser.UserName,
+                DateTime.UtcNow),
+            cancellationToken);
 
         return Result<AuthResponse>.Success(response);
     }

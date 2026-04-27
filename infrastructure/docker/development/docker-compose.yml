@@ -7,6 +7,9 @@ services:
       ASPNETCORE_URLS: https://+:8080
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/fakebook-auth.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: fakebook-auth123
+      MessageBroker__Host: rabbitmq
+      MessageBroker__Username: fakebook
+      MessageBroker__Password: fakebook
     ports:
       - "6001:8080"
     volumes:
@@ -14,6 +17,8 @@ services:
     depends_on:
       auth-db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_started
 
   auth-db:
     image: postgres:17
@@ -31,6 +36,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: fakebook-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: fakebook
+      RABBITMQ_DEFAULT_PASS: fakebook
 
 volumes:
   auth_db_data:

@@ -21,10 +21,12 @@ dotnet sln "$serviceRoot/$solutionName.slnx" add `
   "building-blocks/Fakebook.BuildingBlocks.Api/Fakebook.BuildingBlocks.Api.csproj" `
   "building-blocks/Fakebook.BuildingBlocks.Application/Fakebook.BuildingBlocks.Application.csproj" `
   "building-blocks/Fakebook.BuildingBlocks.Domain/Fakebook.BuildingBlocks.Domain.csproj" `
+  "building-blocks/Fakebook.BuildingBlocks.Messaging/Fakebook.BuildingBlocks.Messaging.csproj" `
   "building-blocks/Fakebook.BuildingBlocks.Infrastructure/Fakebook.BuildingBlocks.Infrastructure.csproj"
 
 dotnet add "$serviceRoot/$solutionName.Application/$solutionName.Application.csproj" reference `
   "$serviceRoot/$solutionName.Domain/$solutionName.Domain.csproj" `
+  "building-blocks/Fakebook.BuildingBlocks.Messaging/Fakebook.BuildingBlocks.Messaging.csproj" `
   "building-blocks/Fakebook.BuildingBlocks.Application/Fakebook.BuildingBlocks.Application.csproj"
 
 dotnet add "$serviceRoot/$solutionName.Infrastructure/$solutionName.Infrastructure.csproj" reference `
