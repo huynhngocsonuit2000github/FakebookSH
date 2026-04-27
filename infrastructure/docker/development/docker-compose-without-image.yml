@@ -1,7 +1,10 @@
 services:
   auth-api:
-    image: fakebook-auth:v1
+    image: fakebook-auth:latest
     container_name: fakebook-auth-api
+    build:
+      context: ../../..
+      dockerfile: infrastructure/docker/docker-files/Fakebook.Auth.Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
       ASPNETCORE_URLS: http://+:8080

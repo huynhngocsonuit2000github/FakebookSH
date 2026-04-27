@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/node_modules/
+**/.angular/
+**/dist/
+**/coverage/
+.git/
+.dotnet-cli-home/

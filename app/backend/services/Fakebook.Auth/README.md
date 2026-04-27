@@ -177,6 +177,7 @@ After this works locally, add features in this order:
 1. Move `AuthService` from Infrastructure into Application using repository interfaces. [done]
 2. Add request validation. [done]
 3. Add correlation ID middleware + correlation delegating handler. [done]
-4. Add centralized exception handling.
-5. Add Dockerfile for the API.
-6. Add message broker events such as `UserRegistered`.
+4. Add centralized exception handling. [done]
+5. Add Dockerfile for the API. [done]
+6. HTTPS for serice
+7. Add message broker events such as `UserRegistered`.
