@@ -10,9 +10,7 @@ public static class ServiceCollectionExtensions
 {
     private const string FrontendCorsPolicy = "Fakebook-ui-cors";
 
-    public static IServiceCollection AddBffServices(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddBffServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
         services.AddOpenApi();
@@ -29,13 +27,9 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static IServiceCollection AddBffAuthentication(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    private static IServiceCollection AddBffAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtOptions = configuration
-            .GetSection(JwtOptions.SectionName)
-            .Get<JwtOptions>() ?? throw new InvalidOperationException("Jwt configuration is missing.");
+        var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ?? throw new InvalidOperationException("Jwt configuration is missing.");
 
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -49,8 +43,7 @@ public static class ServiceCollectionExtensions
                     ValidateLifetime = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidAudience = jwtOptions.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
                     ClockSkew = TimeSpan.FromSeconds(30)
                 };
             });
@@ -65,9 +58,7 @@ public static class ServiceCollectionExtensions
         return app.UseCors(FrontendCorsPolicy);
     }
 
-    private static IServiceCollection AddBffCors(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    private static IServiceCollection AddBffCors(this IServiceCollection services, IConfiguration configuration)
     {
         var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 

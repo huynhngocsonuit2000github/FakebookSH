@@ -15,9 +15,7 @@ public sealed class TokenService : ITokenService
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly JwtOptions _options;
 
-    public TokenService(
-        IDateTimeProvider dateTimeProvider,
-        IOptions<JwtOptions> options)
+    public TokenService(IDateTimeProvider dateTimeProvider, IOptions<JwtOptions> options)
     {
         _dateTimeProvider = dateTimeProvider;
         _options = options.Value;
@@ -38,12 +36,7 @@ public sealed class TokenService : ITokenService
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(
-            issuer: _options.Issuer,
-            audience: _options.Audience,
-            claims: claims,
-            expires: expiresAtUtc.UtcDateTime,
-            signingCredentials: credentials);
+        var token = new JwtSecurityToken(issuer: _options.Issuer, audience: _options.Audience, claims: claims, expires: expiresAtUtc.UtcDateTime, signingCredentials: credentials);
 
         return (new JwtSecurityTokenHandler().WriteToken(token), expiresAtUtc);
     }

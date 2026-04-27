@@ -15,8 +15,7 @@ public sealed class AuthController : ApiControllerBase
     private readonly IAuthService _authService;
     private readonly IMessagePublisher _messagePublisher;
 
-    public AuthController(
-    IAuthService authService, IServiceProvider serviceProvider, IMessagePublisher messagePublisher) : base(serviceProvider)
+    public AuthController(IAuthService authService, IServiceProvider serviceProvider, IMessagePublisher messagePublisher) : base(serviceProvider)
     {
         _authService = authService;
         _messagePublisher = messagePublisher;
@@ -24,46 +23,30 @@ public sealed class AuthController : ApiControllerBase
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public Task<IActionResult> Register(
-        RegisterRequest request,
-        CancellationToken cancellationToken)
+    public Task<IActionResult> Register(RegisterRequest request, CancellationToken cancellationToken)
     {
-        return ExecuteAndValidatorAsync(
-            request,
-            () => _authService.RegisterAsync(request, cancellationToken));
+        return ExecuteAndValidatorAsync(request, () => _authService.RegisterAsync(request, cancellationToken));
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public Task<IActionResult> Login(
-        LoginRequest request,
-        CancellationToken cancellationToken)
+    public Task<IActionResult> Login(LoginRequest request, CancellationToken cancellationToken)
     {
-        return ExecuteAndValidatorAsync(
-            request,
-            () => _authService.LoginAsync(request, cancellationToken));
+        return ExecuteAndValidatorAsync(request, () => _authService.LoginAsync(request, cancellationToken));
     }
 
     [HttpPost("refresh-token")]
     [AllowAnonymous]
-    public Task<IActionResult> RefreshToken(
-        RefreshTokenRequest request,
-        CancellationToken cancellationToken)
+    public Task<IActionResult> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        return ExecuteAndValidatorAsync(
-            request,
-            () => _authService.RefreshTokenAsync(request, cancellationToken));
+        return ExecuteAndValidatorAsync(request, () => _authService.RefreshTokenAsync(request, cancellationToken));
     }
 
     [HttpPost("logout")]
     [AllowAnonymous]
-    public async Task<IActionResult> Logout(
-        LogoutRequest request,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> Logout(LogoutRequest request, CancellationToken cancellationToken)
     {
-        var result = await ExecuteAndValidatorAsync(
-            request,
-            () => _authService.LogoutAsync(request, cancellationToken));
+        var result = await ExecuteAndValidatorAsync(request, () => _authService.LogoutAsync(request, cancellationToken));
 
         return result is OkObjectResult ? NoContent() : result;
     }
@@ -71,13 +54,7 @@ public sealed class AuthController : ApiControllerBase
     [HttpGet("me")]
     public async Task<IActionResult> Me(CancellationToken cancellationToken)
     {
-        await _messagePublisher.PublishAsync(
-            new UserRegisteredIntegrationEvent(
-                Guid.NewGuid(),
-                "email",
-                "username",
-                DateTime.UtcNow),
-            cancellationToken);
+        await _messagePublisher.PublishAsync(new UserRegisteredIntegrationEvent(Guid.NewGuid(), "email", "username", DateTime.UtcNow), cancellationToken);
 
         return Ok(1);
 

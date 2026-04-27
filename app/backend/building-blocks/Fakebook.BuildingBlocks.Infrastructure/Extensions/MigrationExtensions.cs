@@ -6,9 +6,7 @@ namespace Fakebook.BuildingBlocks.Infrastructure.Extensions;
 
 public static class MigrationExtensions
 {
-    public static async Task ApplyDatabaseMigrationAsync<TDbContext>(
-        this WebApplication app)
-        where TDbContext : DbContext
+    public static async Task ApplyDatabaseMigrationAsync<TDbContext>(this WebApplication app) where TDbContext : DbContext
     {
         using var scope = app.Services.CreateScope();
 

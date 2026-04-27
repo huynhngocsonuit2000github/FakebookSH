@@ -8,44 +8,24 @@ public sealed class AuthApiClient : HttpClientHandlerBase, IAuthApiClient
     {
     }
 
-    public Task<AuthResponse> RegisterAsync(
-        RegisterRequest request,
-        CancellationToken cancellationToken)
+    public Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
-        return PostForJsonAsync<RegisterRequest, AuthResponse>(
-            "api/auth/register",
-            request,
-            cancellationToken);
+        return PostForJsonAsync<RegisterRequest, AuthResponse>("api/auth/register", request, cancellationToken);
     }
 
-    public Task<AuthResponse> LoginAsync(
-        LoginRequest request,
-        CancellationToken cancellationToken)
+    public Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
-        return PostForJsonAsync<LoginRequest, AuthResponse>(
-            "api/auth/login",
-            request,
-            cancellationToken);
+        return PostForJsonAsync<LoginRequest, AuthResponse>("api/auth/login", request, cancellationToken);
     }
 
-    public Task<AuthResponse> RefreshTokenAsync(
-        RefreshTokenRequest request,
-        CancellationToken cancellationToken)
+    public Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        return PostForJsonAsync<RefreshTokenRequest, AuthResponse>(
-            "api/auth/refresh-token",
-            request,
-            cancellationToken);
+        return PostForJsonAsync<RefreshTokenRequest, AuthResponse>("api/auth/refresh-token", request, cancellationToken);
     }
 
-    public Task LogoutAsync(
-        LogoutRequest request,
-        CancellationToken cancellationToken)
+    public Task LogoutAsync(LogoutRequest request, CancellationToken cancellationToken)
     {
-        return PostAsync(
-            "api/auth/logout",
-            request,
-            cancellationToken);
+        return PostAsync("api/auth/logout", request, cancellationToken);
     }
 
     public Task<CurrentUserResponse> GetCurrentUserAsync(CancellationToken cancellationToken)

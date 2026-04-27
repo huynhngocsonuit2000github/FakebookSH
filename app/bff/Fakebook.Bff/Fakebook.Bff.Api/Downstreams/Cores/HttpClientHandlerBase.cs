@@ -11,9 +11,7 @@ public abstract class HttpClientHandlerBase
         _httpClient = httpClient;
     }
 
-    protected async Task<TResponse> GetForJsonAsync<TResponse>(
-        string requestUri,
-        CancellationToken cancellationToken)
+    protected async Task<TResponse> GetForJsonAsync<TResponse>(string requestUri, CancellationToken cancellationToken)
     {
         using var response = await _httpClient.GetAsync(requestUri, cancellationToken);
 
@@ -22,37 +20,23 @@ public abstract class HttpClientHandlerBase
         return await ReadRequiredJsonAsync<TResponse>(response, cancellationToken);
     }
 
-    protected async Task<TResponse> PostForJsonAsync<TRequest, TResponse>(
-        string requestUri,
-        TRequest request,
-        CancellationToken cancellationToken)
+    protected async Task<TResponse> PostForJsonAsync<TRequest, TResponse>(string requestUri, TRequest request, CancellationToken cancellationToken)
     {
-        using var response = await _httpClient.PostAsJsonAsync(
-            requestUri,
-            request,
-            cancellationToken);
+        using var response = await _httpClient.PostAsJsonAsync(requestUri, request, cancellationToken);
 
         await EnsureSuccessAsync(response, cancellationToken);
 
         return await ReadRequiredJsonAsync<TResponse>(response, cancellationToken);
     }
 
-    protected async Task PostAsync<TRequest>(
-        string requestUri,
-        TRequest request,
-        CancellationToken cancellationToken)
+    protected async Task PostAsync<TRequest>(string requestUri, TRequest request, CancellationToken cancellationToken)
     {
-        using var response = await _httpClient.PostAsJsonAsync(
-            requestUri,
-            request,
-            cancellationToken);
+        using var response = await _httpClient.PostAsJsonAsync(requestUri, request, cancellationToken);
 
         await EnsureSuccessAsync(response, cancellationToken);
     }
 
-    private static async Task EnsureSuccessAsync(
-        HttpResponseMessage response,
-        CancellationToken cancellationToken)
+    private static async Task EnsureSuccessAsync(HttpResponseMessage response, CancellationToken cancellationToken)
     {
         if (response.IsSuccessStatusCode)
         {
@@ -65,13 +49,10 @@ public abstract class HttpClientHandlerBase
         throw new DownstreamHttpException((int)response.StatusCode, body, contentType);
     }
 
-    private static async Task<TResponse> ReadRequiredJsonAsync<TResponse>(
-        HttpResponseMessage response,
-        CancellationToken cancellationToken)
+    private static async Task<TResponse> ReadRequiredJsonAsync<TResponse>(HttpResponseMessage response, CancellationToken cancellationToken)
     {
         var value = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken);
 
-        return value ?? throw new InvalidOperationException(
-            $"Expected a non-empty JSON response body for {typeof(TResponse).Name}.");
+        return value ?? throw new InvalidOperationException($"Expected a non-empty JSON response body for {typeof(TResponse).Name}.");
     }
 }

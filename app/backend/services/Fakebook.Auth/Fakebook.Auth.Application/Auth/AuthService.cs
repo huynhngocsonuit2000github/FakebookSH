@@ -18,13 +18,7 @@ public sealed class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IMessagePublisher _messagePublisher;
 
-    public AuthService(
-        IUserRepository userRepository,
-        IRefreshTokenRepository refreshTokenRepository,
-        IDateTimeProvider dateTimeProvider,
-        IPasswordService passwordService,
-        ITokenService tokenService,
-        IMessagePublisher messagePublisher)
+    public AuthService(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository, IDateTimeProvider dateTimeProvider, IPasswordService passwordService, ITokenService tokenService, IMessagePublisher messagePublisher)
     {
         _userRepository = userRepository;
         _refreshTokenRepository = refreshTokenRepository;
@@ -34,21 +28,16 @@ public sealed class AuthService : IAuthService
         _messagePublisher = messagePublisher;
     }
 
-    public async Task<Result<AuthResponse>> RegisterAsync(
-        RegisterRequest request,
-        CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         var email = NormalizeEmail(request.Email);
         var userName = NormalizeUserName(request.UserName);
 
-        var userExists = await _userRepository.FirstOrDefaultAsync(
-            user => user.Email == email || user.UserName == userName,
-            cancellationToken);
+        var userExists = await _userRepository.FirstOrDefaultAsync(user => user.Email == email || user.UserName == userName, cancellationToken);
 
         if (userExists is not null)
         {
-            return Result<AuthResponse>.Failure(
-                new Error("user_already_exists", "Email or userName already exists."));
+            return Result<AuthResponse>.Failure(new Error("user_already_exists", "Email or userName already exists."));
         }
 
         var passwordHash = _passwordService.Hash(request.Password);
@@ -60,39 +49,27 @@ public sealed class AuthService : IAuthService
 
         await _userRepository.SaveChangesAsync(cancellationToken);
 
-        await _messagePublisher.PublishAsync(
-            new UserRegisteredIntegrationEvent(
-                newUser.Id,
-                newUser.Email,
-                newUser.UserName,
-                DateTime.UtcNow),
-            cancellationToken);
+        await _messagePublisher.PublishAsync(new UserRegisteredIntegrationEvent(newUser.Id, newUser.Email, newUser.UserName, DateTime.UtcNow), cancellationToken);
 
         return Result<AuthResponse>.Success(response);
     }
 
-    public async Task<Result<AuthResponse>> LoginAsync(
-        LoginRequest request,
-        CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
         var login = NormalizeLogin(request.EmailOrUserName);
 
-        var user = await _userRepository.FirstOrDefaultAsync(
-            user => user.Email == login || user.UserName == login,
-            cancellationToken);
+        var user = await _userRepository.FirstOrDefaultAsync(user => user.Email == login || user.UserName == login, cancellationToken);
 
         if (user is null || !user.IsActive)
         {
-            return Result<AuthResponse>.Failure(
-                new Error("invalid_credentials", "Invalid email/userName or password."));
+            return Result<AuthResponse>.Failure(new Error("invalid_credentials", "Invalid email/userName or password."));
         }
 
         var isPasswordValid = _passwordService.Verify(request.Password, user.PasswordHash);
 
         if (!isPasswordValid)
         {
-            return Result<AuthResponse>.Failure(
-                new Error("invalid_credentials", "Invalid email/userName or password."));
+            return Result<AuthResponse>.Failure(new Error("invalid_credentials", "Invalid email/userName or password."));
         }
 
         var response = await CreateAuthResponseAsync(user);
@@ -102,22 +79,17 @@ public sealed class AuthService : IAuthService
         return Result<AuthResponse>.Success(response);
     }
 
-    public async Task<Result<AuthResponse>> RefreshTokenAsync(
-        RefreshTokenRequest request,
-        CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var tokenHash = _tokenService.HashRefreshToken(request.RefreshToken);
 
-        var storedToken = await _refreshTokenRepository.GetByTokenHashWithUserAsync(
-            tokenHash,
-            cancellationToken);
+        var storedToken = await _refreshTokenRepository.GetByTokenHashWithUserAsync(tokenHash, cancellationToken);
 
         var utcNow = new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero);
 
         if (storedToken is null || !IsRefreshTokenActive(storedToken, utcNow) || !storedToken.User.IsActive)
         {
-            return Result<AuthResponse>.Failure(
-                new Error("invalid_refresh_token", "Refresh token is invalid or expired."));
+            return Result<AuthResponse>.Failure(new Error("invalid_refresh_token", "Refresh token is invalid or expired."));
         }
 
         RevokeRefreshToken(storedToken, utcNow);
@@ -129,15 +101,11 @@ public sealed class AuthService : IAuthService
         return Result<AuthResponse>.Success(response);
     }
 
-    public async Task<Result<bool>> LogoutAsync(
-        LogoutRequest request,
-        CancellationToken cancellationToken)
+    public async Task<Result<bool>> LogoutAsync(LogoutRequest request, CancellationToken cancellationToken)
     {
         var tokenHash = _tokenService.HashRefreshToken(request.RefreshToken);
 
-        var storedToken = await _refreshTokenRepository.FirstOrDefaultAsync(
-            token => token.TokenHash == tokenHash,
-            cancellationToken);
+        var storedToken = await _refreshTokenRepository.FirstOrDefaultAsync(token => token.TokenHash == tokenHash, cancellationToken);
 
         if (storedToken is not null)
         {
@@ -150,22 +118,16 @@ public sealed class AuthService : IAuthService
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<CurrentUserResponse>> GetCurrentUserAsync(
-        Guid userId,
-        CancellationToken cancellationToken)
+    public async Task<Result<CurrentUserResponse>> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
 
         if (user is null || !user.IsActive)
         {
-            return Result<CurrentUserResponse>.Failure(
-                new Error("user_not_found", "Current user was not found."));
+            return Result<CurrentUserResponse>.Failure(new Error("user_not_found", "Current user was not found."));
         }
 
-        var response = new CurrentUserResponse(
-            user.Id,
-            user.Email,
-            user.UserName);
+        var response = new CurrentUserResponse(user.Id, user.Email, user.UserName);
 
         return Result<CurrentUserResponse>.Success(response);
     }
@@ -177,22 +139,9 @@ public sealed class AuthService : IAuthService
         var accessToken = _tokenService.CreateAccessToken(user);
         var refreshToken = _tokenService.CreateRefreshToken();
 
-        await _refreshTokenRepository.AddAsync(
-            CreateRefreshToken(
-                user.Id,
-                refreshToken.TokenHash,
-                refreshToken.ExpiresAtUtc,
-                new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero)),
-            CancellationToken.None);
+        await _refreshTokenRepository.AddAsync(CreateRefreshToken(user.Id, refreshToken.TokenHash, refreshToken.ExpiresAtUtc, new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero)), CancellationToken.None);
 
-        return new AuthResponse(
-            user.Id,
-            user.Email,
-            user.UserName,
-            accessToken.Token,
-            accessToken.ExpiresAtUtc,
-            refreshToken.PlainToken,
-            refreshToken.ExpiresAtUtc);
+        return new AuthResponse(user.Id, user.Email, user.UserName, accessToken.Token, accessToken.ExpiresAtUtc, refreshToken.PlainToken, refreshToken.ExpiresAtUtc);
     }
 
     private User CreateUser(string email, string userName, string passwordHash)
@@ -210,11 +159,7 @@ public sealed class AuthService : IAuthService
         };
     }
 
-    private static RefreshToken CreateRefreshToken(
-        Guid userId,
-        string tokenHash,
-        DateTimeOffset expiresAtUtc,
-        DateTimeOffset createdAtUtc)
+    private static RefreshToken CreateRefreshToken(Guid userId, string tokenHash, DateTimeOffset expiresAtUtc, DateTimeOffset createdAtUtc)
     {
         return new RefreshToken
         {

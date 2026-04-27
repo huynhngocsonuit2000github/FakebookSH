@@ -11,9 +11,7 @@ public sealed class RefreshTokenRepository : RepositoryBase<RefreshToken, AuthDb
     {
     }
 
-    public Task<RefreshToken?> GetByTokenHashWithUserAsync(
-        string tokenHash,
-        CancellationToken cancellationToken)
+    public Task<RefreshToken?> GetByTokenHashWithUserAsync(string tokenHash, CancellationToken cancellationToken)
     {
         return DbSet
             .Include(token => token.User)

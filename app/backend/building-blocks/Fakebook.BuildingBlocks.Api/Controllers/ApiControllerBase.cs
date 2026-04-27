@@ -15,10 +15,7 @@ public abstract class ApiControllerBase : ControllerBase
         _serviceProvider = serviceProvider;
     }
 
-    protected async Task<IActionResult> ExecuteAndValidatorAsync<TRequest, TResponse>(
-        TRequest request,
-        Func<Task<Result<TResponse>>> action,
-        CancellationToken cancellationToken = default)
+    protected async Task<IActionResult> ExecuteAndValidatorAsync<TRequest, TResponse>(TRequest request, Func<Task<Result<TResponse>>> action, CancellationToken cancellationToken = default)
     {
         var validator = _serviceProvider.GetService<IValidator<TRequest>>();
 

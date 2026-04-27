@@ -12,10 +12,7 @@ public sealed class CorrelationIdMiddleware
     private readonly ILogger<CorrelationIdMiddleware> _logger;
     private readonly ICorrelationIdProvider _correlationIdProvider;
 
-    public CorrelationIdMiddleware(
-        RequestDelegate next,
-        ILogger<CorrelationIdMiddleware> logger,
-        ICorrelationIdProvider correlationIdProvider)
+    public CorrelationIdMiddleware(RequestDelegate next, ILogger<CorrelationIdMiddleware> logger, ICorrelationIdProvider correlationIdProvider)
     {
         _next = next;
         _logger = logger;

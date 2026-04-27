@@ -9,9 +9,7 @@ public sealed class DownstreamRequestContextHandler : DelegatingHandler
         _httpContextAccessor = httpContextAccessor;
     }
 
-    protected override Task<HttpResponseMessage> SendAsync(
-        HttpRequestMessage request,
-        CancellationToken cancellationToken)
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var authorization = _httpContextAccessor.HttpContext?.Request.Headers.Authorization.ToString();
 

@@ -7,9 +7,7 @@ namespace Fakebook.Feed.Infrastructure.DependencyInjection;
 
 public static class InfrastructureServiceCollectionExtensions
 {
-    public static IServiceCollection AddFeedInfrastructure(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddFeedInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMassTransit(config =>
         {

@@ -18,49 +18,37 @@ public sealed class AuthBffController : BffControllerBase
     [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType<AuthResponse>(StatusCodes.Status200OK)]
-    public Task<IActionResult> Register(
-        RegisterRequest request,
-        CancellationToken cancellationToken)
+    public Task<IActionResult> Register(RegisterRequest request, CancellationToken cancellationToken)
     {
-        return ExecuteDownstreamAsync(
-            () => _authApiClient.RegisterAsync(request, cancellationToken));
+        return ExecuteDownstreamAsync(() => _authApiClient.RegisterAsync(request, cancellationToken));
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
     [ProducesResponseType<AuthResponse>(StatusCodes.Status200OK)]
-    public Task<IActionResult> Login(
-        LoginRequest request,
-        CancellationToken cancellationToken)
+    public Task<IActionResult> Login(LoginRequest request, CancellationToken cancellationToken)
     {
-        return ExecuteDownstreamAsync(
-            () => _authApiClient.LoginAsync(request, cancellationToken));
+        return ExecuteDownstreamAsync(() => _authApiClient.LoginAsync(request, cancellationToken));
     }
 
     [HttpPost("refresh-token")]
     [AllowAnonymous]
     [ProducesResponseType<AuthResponse>(StatusCodes.Status200OK)]
-    public Task<IActionResult> RefreshToken(
-        RefreshTokenRequest request,
-        CancellationToken cancellationToken)
+    public Task<IActionResult> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        return ExecuteDownstreamAsync(
-            () => _authApiClient.RefreshTokenAsync(request, cancellationToken));
+        return ExecuteDownstreamAsync(() => _authApiClient.RefreshTokenAsync(request, cancellationToken));
     }
 
     [HttpPost("logout")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public Task<IActionResult> Logout(
-        LogoutRequest request,
-        CancellationToken cancellationToken)
+    public Task<IActionResult> Logout(LogoutRequest request, CancellationToken cancellationToken)
     {
-        return ExecuteDownstreamAsync(
-            async () =>
-            {
-                await _authApiClient.LogoutAsync(request, cancellationToken);
-                return NoContent();
-            });
+        return ExecuteDownstreamAsync(async () =>
+        {
+            await _authApiClient.LogoutAsync(request, cancellationToken);
+            return NoContent();
+        });
     }
 
     [HttpGet("me")]
@@ -68,7 +56,6 @@ public sealed class AuthBffController : BffControllerBase
     [ProducesResponseType<CurrentUserResponse>(StatusCodes.Status200OK)]
     public Task<IActionResult> Me(CancellationToken cancellationToken)
     {
-        return ExecuteDownstreamAsync(
-            () => _authApiClient.GetCurrentUserAsync(cancellationToken));
+        return ExecuteDownstreamAsync(() => _authApiClient.GetCurrentUserAsync(cancellationToken));
     }
 }

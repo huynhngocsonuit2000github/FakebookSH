@@ -14,11 +14,7 @@ public abstract class MessageConsumerBase<TMessage> : IConsumer<TMessage> where 
 
     public async Task Consume(ConsumeContext<TMessage> context)
     {
-        using var scope = _logger.BeginScope(
-            "MessageId={MessageId} CorrelationId={CorrelationId} MessageType={MessageType}",
-            context.MessageId,
-            context.CorrelationId,
-            typeof(TMessage).Name);
+        using var scope = _logger.BeginScope("MessageId={MessageId} CorrelationId={CorrelationId} MessageType={MessageType}", context.MessageId, context.CorrelationId, typeof(TMessage).Name);
 
         _logger.LogInformation("Consuming message {MessageType}", typeof(TMessage).Name);
 

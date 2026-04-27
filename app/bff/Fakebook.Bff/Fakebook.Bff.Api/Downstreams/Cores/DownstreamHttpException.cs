@@ -2,10 +2,7 @@ namespace Fakebook.Bff.Api.Downstreams.Cores;
 
 public sealed class DownstreamHttpException : Exception
 {
-    public DownstreamHttpException(
-        int statusCode,
-        string? responseBody,
-        string? contentType)
+    public DownstreamHttpException(int statusCode, string? responseBody, string? contentType)
         : base("Downstream service returned an error.")
     {
         StatusCode = statusCode;

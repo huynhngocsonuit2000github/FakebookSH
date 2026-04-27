@@ -5,8 +5,7 @@ namespace Fakebook.Bff.Api.Controllers;
 
 public abstract class BffControllerBase : ControllerBase
 {
-    protected async Task<IActionResult> ExecuteDownstreamAsync<TResponse>(
-        Func<Task<TResponse>> downstreamCall)
+    protected async Task<IActionResult> ExecuteDownstreamAsync<TResponse>(Func<Task<TResponse>> downstreamCall)
     {
         try
         {
@@ -19,8 +18,7 @@ public abstract class BffControllerBase : ControllerBase
         }
     }
 
-    protected async Task<IActionResult> ExecuteDownstreamAsync(
-        Func<Task<IActionResult>> downstreamCall)
+    protected async Task<IActionResult> ExecuteDownstreamAsync(Func<Task<IActionResult>> downstreamCall)
     {
         try
         {
