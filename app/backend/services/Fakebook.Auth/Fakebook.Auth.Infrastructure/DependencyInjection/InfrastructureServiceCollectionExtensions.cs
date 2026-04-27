@@ -1,7 +1,9 @@
 using System.Text;
-using Fakebook.Auth.Infrastructure;
 using Fakebook.Auth.Application.Auth;
+using Fakebook.Auth.Application.Boundary.Repositories;
+using Fakebook.Auth.Application.Boundary.Security;
 using Fakebook.Auth.Infrastructure.Persistence;
+using Fakebook.Auth.Infrastructure.Persistence.Repositories;
 using Fakebook.Auth.Infrastructure.Security;
 using Fakebook.BuildingBlocks.Application.Abstractions.Clock;
 using Fakebook.BuildingBlocks.Infrastructure.Clock;
@@ -27,9 +29,11 @@ public static class InfrastructureServiceCollectionExtensions
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
 
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddSingleton<PasswordService>();
-        services.AddSingleton<TokenService>();
+        services.AddSingleton<IPasswordService, PasswordService>();
+        services.AddSingleton<ITokenService, TokenService>();
 
         var jwtOptions = configuration
             .GetSection(JwtOptions.SectionName)

@@ -1,28 +1,29 @@
-using Fakebook.Auth.Application.Auth;
+using Fakebook.Auth.Application.Boundary.Repositories;
+using Fakebook.Auth.Application.Boundary.Security;
 using Fakebook.Auth.Domain.Entities;
-using Fakebook.Auth.Infrastructure.Persistence;
-using Fakebook.Auth.Infrastructure.Security;
 using Fakebook.BuildingBlocks.Application.Abstractions.Clock;
 using Fakebook.BuildingBlocks.Application.Common.Errors;
 using Fakebook.BuildingBlocks.Application.Common.Results;
-using Microsoft.EntityFrameworkCore;
 
-namespace Fakebook.Auth.Infrastructure;
+namespace Fakebook.Auth.Application.Auth;
 
 public sealed class AuthService : IAuthService
 {
-    private readonly AuthDbContext _dbContext;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly PasswordService _passwordService;
-    private readonly TokenService _tokenService;
+    private readonly IPasswordService _passwordService;
+    private readonly ITokenService _tokenService;
 
     public AuthService(
-        AuthDbContext dbContext,
+        IUserRepository userRepository,
+        IRefreshTokenRepository refreshTokenRepository,
         IDateTimeProvider dateTimeProvider,
-        PasswordService passwordService,
-        TokenService tokenService)
+        IPasswordService passwordService,
+        ITokenService tokenService)
     {
-        _dbContext = dbContext;
+        _userRepository = userRepository;
+        _refreshTokenRepository = refreshTokenRepository;
         _dateTimeProvider = dateTimeProvider;
         _passwordService = passwordService;
         _tokenService = tokenService;
@@ -35,10 +36,11 @@ public sealed class AuthService : IAuthService
         var email = NormalizeEmail(request.Email);
         var userName = NormalizeUserName(request.UserName);
 
-        var userExists = await _dbContext.Users
-            .AnyAsync(user => user.Email == email || user.UserName == userName, cancellationToken);
+        var userExists = await _userRepository.FirstOrDefaultAsync(
+            user => user.Email == email || user.UserName == userName,
+            cancellationToken);
 
-        if (userExists)
+        if (userExists is not null)
         {
             return Result<AuthResponse>.Failure(
                 new Error("user_already_exists", "Email or userName already exists."));
@@ -47,11 +49,11 @@ public sealed class AuthService : IAuthService
         var passwordHash = _passwordService.Hash(request.Password);
         var newUser = CreateUser(email, userName, passwordHash);
 
-        _dbContext.Users.Add(newUser);
+        await _userRepository.AddAsync(newUser, cancellationToken);
 
-        var response = CreateAuthResponse(newUser);
+        var response = await CreateAuthResponseAsync(newUser);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _userRepository.SaveChangesAsync(cancellationToken);
 
         return Result<AuthResponse>.Success(response);
     }
@@ -62,10 +64,9 @@ public sealed class AuthService : IAuthService
     {
         var login = NormalizeLogin(request.EmailOrUserName);
 
-        var user = await _dbContext.Users
-            .FirstOrDefaultAsync(
-                user => user.Email == login || user.UserName == login,
-                cancellationToken);
+        var user = await _userRepository.FirstOrDefaultAsync(
+            user => user.Email == login || user.UserName == login,
+            cancellationToken);
 
         if (user is null || !user.IsActive)
         {
@@ -81,9 +82,9 @@ public sealed class AuthService : IAuthService
                 new Error("invalid_credentials", "Invalid email/userName or password."));
         }
 
-        var response = CreateAuthResponse(user);
+        var response = await CreateAuthResponseAsync(user);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _userRepository.SaveChangesAsync(cancellationToken);
 
         return Result<AuthResponse>.Success(response);
     }
@@ -94,9 +95,9 @@ public sealed class AuthService : IAuthService
     {
         var tokenHash = _tokenService.HashRefreshToken(request.RefreshToken);
 
-        var storedToken = await _dbContext.RefreshTokens
-            .Include(token => token.User)
-            .FirstOrDefaultAsync(token => token.TokenHash == tokenHash, cancellationToken);
+        var storedToken = await _refreshTokenRepository.GetByTokenHashWithUserAsync(
+            tokenHash,
+            cancellationToken);
 
         var utcNow = new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero);
 
@@ -108,9 +109,9 @@ public sealed class AuthService : IAuthService
 
         RevokeRefreshToken(storedToken, utcNow);
 
-        var response = CreateAuthResponse(storedToken.User);
+        var response = await CreateAuthResponseAsync(storedToken.User);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
         return Result<AuthResponse>.Success(response);
     }
@@ -121,15 +122,16 @@ public sealed class AuthService : IAuthService
     {
         var tokenHash = _tokenService.HashRefreshToken(request.RefreshToken);
 
-        var storedToken = await _dbContext.RefreshTokens
-            .FirstOrDefaultAsync(token => token.TokenHash == tokenHash, cancellationToken);
+        var storedToken = await _refreshTokenRepository.FirstOrDefaultAsync(
+            token => token.TokenHash == tokenHash,
+            cancellationToken);
 
         if (storedToken is not null)
         {
             var utcNow = new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero);
 
             RevokeRefreshToken(storedToken, utcNow);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
         }
 
         return Result<bool>.Success(true);
@@ -139,8 +141,7 @@ public sealed class AuthService : IAuthService
         Guid userId,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
-            .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
 
         if (user is null || !user.IsActive)
         {
@@ -158,17 +159,18 @@ public sealed class AuthService : IAuthService
 
     #region Private
 
-    private AuthResponse CreateAuthResponse(User user)
+    private async Task<AuthResponse> CreateAuthResponseAsync(User user)
     {
         var accessToken = _tokenService.CreateAccessToken(user);
         var refreshToken = _tokenService.CreateRefreshToken();
 
-        _dbContext.RefreshTokens.Add(
+        await _refreshTokenRepository.AddAsync(
             CreateRefreshToken(
                 user.Id,
                 refreshToken.TokenHash,
                 refreshToken.ExpiresAtUtc,
-                new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero)));
+                new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero)),
+            CancellationToken.None);
 
         return new AuthResponse(
             user.Id,

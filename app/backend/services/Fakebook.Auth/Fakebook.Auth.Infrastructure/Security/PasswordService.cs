@@ -1,8 +1,9 @@
+using Fakebook.Auth.Application.Boundary.Security;
 using Microsoft.AspNetCore.Identity;
 
 namespace Fakebook.Auth.Infrastructure.Security;
 
-public sealed class PasswordService
+public sealed class PasswordService : IPasswordService
 {
     private readonly PasswordHasher<object> _passwordHasher = new();
 

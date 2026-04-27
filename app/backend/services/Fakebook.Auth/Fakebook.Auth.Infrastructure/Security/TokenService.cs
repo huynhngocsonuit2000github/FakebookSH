@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Fakebook.Auth.Application.Boundary.Security;
 using Fakebook.Auth.Domain.Entities;
 using Fakebook.BuildingBlocks.Application.Abstractions.Clock;
 using Microsoft.Extensions.Options;
@@ -9,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Fakebook.Auth.Infrastructure.Security;
 
-public sealed class TokenService
+public sealed class TokenService : ITokenService
 {
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly JwtOptions _options;
