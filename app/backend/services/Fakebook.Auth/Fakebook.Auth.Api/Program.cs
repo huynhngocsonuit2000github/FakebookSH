@@ -11,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Custom service registrations
+builder.Services.AddFakebookCorrelationIdDelegatingHandler();
+builder.Services.AddDownStreamApiClientWithCorrelationIdHandler(builder.Configuration);
 builder.Services.AddAuthInfrastructure(builder.Configuration);
 builder.Services.AddValidators();
 
@@ -24,6 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseFakebookCorrelationId();
 app.UseFakebookExceptionHandling();
 
 app.UseHttpsRedirection();
