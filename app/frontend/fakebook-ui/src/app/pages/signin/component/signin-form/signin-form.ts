@@ -1,3 +1,4 @@
+import { AuthState } from './../../../../state/auth/auth.models';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -6,6 +7,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { AuthActions } from '../../../../state/auth/auth.actions';
+import { Store } from '@ngrx/store';
+import {
+  selectAuthError,
+  selectAuthLoading,
+  selectAuthState,
+} from '../../../../state/auth/auth.reducer';
 
 @Component({
   selector: 'app-signin-form',
@@ -24,12 +32,19 @@ import { RouterModule } from '@angular/router';
 export class SigninForm {
   hidePassword = true;
   form: FormGroup;
+  loading$;
+  error$;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+  ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
+    this.loading$ = this.store.select(selectAuthLoading);
+    this.error$ = this.store.select(selectAuthError);
   }
 
   onSubmit(): void {
@@ -37,7 +52,15 @@ export class SigninForm {
       this.form.markAllAsTouched();
       return;
     }
+    const { email, password } = this.form.value;
 
-    console.log(this.form.value);
+    this.store.dispatch(
+      AuthActions.login({
+        request: {
+          emailOrUserName: email,
+          password,
+        },
+      }),
+    );
   }
 }

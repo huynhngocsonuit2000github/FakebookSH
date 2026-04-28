@@ -39,8 +39,17 @@
           <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
         </button>
       </mat-form-field>
-
-      <button mat-flat-button class="login-btn full-width" type="submit">Log in</button>
+      @if (!(loading$ | async) && (error$ | async)) {
+        <p class="error-message">{{ error$ | async }}</p>
+      }
+      <button
+        mat-flat-button
+        class="login-btn full-width"
+        type="submit"
+        [disabled]="loading$ | async"
+      >
+        Log in
+      </button>
     </form>
 
     <div class="divider">
