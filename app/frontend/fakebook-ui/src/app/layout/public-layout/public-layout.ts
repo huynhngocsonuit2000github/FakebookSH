@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Header } from '../component/header/header';
 import { Footer } from '../component/footer/footer';
+import { PublicHeader } from '../component/public-header/public-header';
 
 @Component({
   selector: 'app-public-layout',
-  imports: [RouterModule, Header, Footer],
+  imports: [RouterModule, PublicHeader, Footer],
   templateUrl: './public-layout.html',
   styleUrl: './public-layout.scss',
 })

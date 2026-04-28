@@ -71,6 +71,10 @@ Testing
 - [ ] Get user by username
 - [ ] Update profile
 
+### Integrate UI with BFF
+
+Task 007
+
 ---
 
 ## 📰 Phase 2 – Feed & Posts
