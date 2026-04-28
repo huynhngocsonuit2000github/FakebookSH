@@ -54,6 +54,7 @@ Testing
 - [x] Logout API
 - [x] Get current user (`/me`)
 - [ ] Home feed API
+- [ ] TODO: Handle HTTP or HTTPS
 
 ### Auth Service
 

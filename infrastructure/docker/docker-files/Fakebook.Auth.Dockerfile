@@ -16,6 +16,7 @@ COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Api/Fakebook.BuildingBl
 COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Application/Fakebook.BuildingBlocks.Application.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Application/
 COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Domain/Fakebook.BuildingBlocks.Domain.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Domain/
 COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Infrastructure/Fakebook.BuildingBlocks.Infrastructure.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Infrastructure/
+COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Messaging/Fakebook.BuildingBlocks.Messaging.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Messaging/
 
 RUN dotnet restore app/backend/services/Fakebook.Auth/Fakebook.Auth.Api/Fakebook.Auth.Api.csproj
 
@@ -29,5 +30,10 @@ RUN dotnet publish app/backend/services/Fakebook.Auth/Fakebook.Auth.Api/Fakebook
 
 FROM runtime AS final
 WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y curl \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "Fakebook.Auth.Api.dll"]

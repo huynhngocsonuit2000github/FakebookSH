@@ -1,7 +1,5 @@
 using Fakebook.Auth.Application.Auth;
 using Fakebook.BuildingBlocks.Api.Controllers;
-using Fakebook.BuildingBlocks.Application.Messaging;
-using Fakebook.BuildingBlocks.Messaging.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,12 +11,10 @@ namespace Fakebook.Auth.Api.Controllers;
 public sealed class AuthController : ApiControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly IMessagePublisher _messagePublisher;
 
-    public AuthController(IAuthService authService, IServiceProvider serviceProvider, IMessagePublisher messagePublisher) : base(serviceProvider)
+    public AuthController(IAuthService authService, IServiceProvider serviceProvider) : base(serviceProvider)
     {
         _authService = authService;
-        _messagePublisher = messagePublisher;
     }
 
     [HttpPost("register")]
@@ -54,10 +50,6 @@ public sealed class AuthController : ApiControllerBase
     [HttpGet("me")]
     public async Task<IActionResult> Me(CancellationToken cancellationToken)
     {
-        await _messagePublisher.PublishAsync(new UserRegisteredIntegrationEvent(Guid.NewGuid(), "email", "username", DateTime.UtcNow), cancellationToken);
-
-        return Ok(1);
-
         var userIdText = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!Guid.TryParse(userIdText, out var userId))

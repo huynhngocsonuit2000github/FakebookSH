@@ -1,24 +1,38 @@
 services:
+  bff-api:
+    image: fakebook-bff:v1
+    container_name: fakebook-bff-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+    ports:
+      - "6000:8080"
+    depends_on:
+      auth-api:
+        condition: service_healthy
+
   auth-api:
-    image: fakebook-auth:v1
+    image: fakebook-auth:v2
     container_name: fakebook-auth-api
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
-      ASPNETCORE_URLS: https://+:8080
-      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/fakebook-auth.pfx
-      ASPNETCORE_Kestrel__Certificates__Default__Password: fakebook-auth123
+      ASPNETCORE_URLS: http://+:8080
       MessageBroker__Host: rabbitmq
       MessageBroker__Username: fakebook
       MessageBroker__Password: fakebook
     ports:
       - "6001:8080"
-    volumes:
-      - ./../certs:/https:ro
     depends_on:
       auth-db:
         condition: service_healthy
       rabbitmq:
         condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
   auth-db:
     image: postgres:17
