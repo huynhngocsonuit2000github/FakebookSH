@@ -39,16 +39,29 @@
           <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
         </button>
       </mat-form-field>
-      @if (!(loading$ | async) && (error$ | async)) {
-        <p class="error-message">{{ error$ | async }}</p>
+      @if (!(loading$ | async) && (error$ | async); as error) {
+        <div class="auth-error">
+          <mat-icon>error_outline</mat-icon>
+
+          <div>
+            <strong>Login failed</strong>
+            <p>{{ error }}</p>
+          </div>
+        </div>
       }
+
       <button
         mat-flat-button
         class="login-btn full-width"
         type="submit"
-        [disabled]="loading$ | async"
+        [disabled]="(loading$ | async) || form.invalid"
       >
-        Log in
+        @if (loading$ | async) {
+          <mat-spinner diameter="22"></mat-spinner>
+          <span>Logging in...</span>
+        } @else {
+          <span>Log in</span>
+        }
       </button>
     </form>
 
