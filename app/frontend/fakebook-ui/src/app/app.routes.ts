@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { PublicLayout } from './layout/public-layout/public-layout';
 import { MainLayout } from './layout/main-layout/main-layout';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   //   Public page
@@ -13,11 +14,13 @@ export const routes: Routes = [
   // Main pages, after the user logged in, will be here, with main layout
   {
     path: 'feed',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [{ path: '', loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed) }],
   },
   {
     path: 'profile',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       { path: '', loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile) },
@@ -25,6 +28,7 @@ export const routes: Routes = [
   },
   {
     path: 'friends',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       { path: '', loadComponent: () => import('./pages/friends/friends').then((m) => m.Friends) },
@@ -32,6 +36,7 @@ export const routes: Routes = [
   },
   {
     path: 'saved',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       { path: '', loadComponent: () => import('./pages/saved/saved').then((m) => m.Saved) },
@@ -39,6 +44,7 @@ export const routes: Routes = [
   },
   {
     path: 'messages',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       {
@@ -49,6 +55,7 @@ export const routes: Routes = [
   },
   {
     path: 'notifications',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       {
@@ -60,6 +67,7 @@ export const routes: Routes = [
   },
   {
     path: 'explore',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       { path: '', loadComponent: () => import('./pages/explore/explore').then((m) => m.Explore) },
@@ -67,6 +75,7 @@ export const routes: Routes = [
   },
   {
     path: 'media',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       { path: '', loadComponent: () => import('./pages/media/media').then((m) => m.Media) },
@@ -74,6 +83,7 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
+    canActivate: [authGuard],
     component: MainLayout,
     children: [
       {
