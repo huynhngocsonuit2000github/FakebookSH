@@ -121,6 +121,17 @@
   box-shadow: 0 14px 28px rgba(45, 190, 140, 0.18) !important;
 }
 
+:host ::ng-deep .signup-btn .mdc-button__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+:host ::ng-deep .signup-btn mat-spinner circle {
+  stroke: #ffffff !important;
+}
+
 .terms-text {
   margin: 14px 0 0;
   text-align: center;
@@ -192,6 +203,42 @@
   color: #55646c;
   text-decoration: none;
   font-size: 0.95rem;
+}
+
+.auth-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  margin: 16px 0 14px;
+  padding: 16px 18px;
+
+  border: 1px solid #ffb4b4;
+  border-radius: 14px;
+  background: #fff5f5;
+  color: #b42318;
+}
+
+.auth-error mat-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: #d92d20;
+}
+
+.auth-error strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.auth-error p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 @media (max-width: 992px) {

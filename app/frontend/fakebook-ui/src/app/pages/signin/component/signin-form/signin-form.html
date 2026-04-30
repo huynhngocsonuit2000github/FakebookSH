@@ -13,8 +13,9 @@
         >
           <mat-icon matPrefix>mail_outline</mat-icon>
           <input matInput formControlName="email" placeholder="you@example.com" />
-          <mat-error *ngIf="form.get('email')?.hasError('required')"> Email is required </mat-error>
-          <mat-error *ngIf="form.get('email')?.hasError('email')"> Invalid email format </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            Username or Email is required
+          </mat-error>
         </mat-form-field>
       </div>
 

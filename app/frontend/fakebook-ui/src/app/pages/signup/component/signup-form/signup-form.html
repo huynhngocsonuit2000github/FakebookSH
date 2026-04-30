@@ -13,6 +13,9 @@
             <mat-error *ngIf="form.get('firstName')?.hasError('required')">
               First name is required
             </mat-error>
+            <mat-error *ngIf="form.get('firstName')?.hasError('maxlength')">
+              First name must be 100 characters or fewer
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -23,6 +26,9 @@
 
             <mat-error *ngIf="form.get('lastName')?.hasError('required')">
               Last name is required
+            </mat-error>
+            <mat-error *ngIf="form.get('lastName')?.hasError('maxlength')">
+              Last name must be 100 characters or fewer
             </mat-error>
           </mat-form-field>
         </div>
@@ -36,6 +42,9 @@
           <mat-error *ngIf="form.get('username')?.hasError('required')">
             Username is required
           </mat-error>
+          <mat-error *ngIf="form.get('username')?.hasError('maxlength')">
+            Username must be 64 characters or fewer
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -45,6 +54,7 @@
           <mat-icon matPrefix>mail_outline</mat-icon>
           <input matInput formControlName="email" placeholder="you@example.com" />
           <mat-error *ngIf="form.get('email')?.hasError('required')"> Email is required </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')"> Invalid email format </mat-error>
         </mat-form-field>
       </div>
 
@@ -73,7 +83,30 @@
         </mat-form-field>
       </div>
 
-      <button mat-flat-button class="signup-btn full-width" type="submit">Create account</button>
+      @if (!(loading$ | async) && (error$ | async); as error) {
+        <div class="auth-error">
+          <mat-icon>error_outline</mat-icon>
+
+          <div>
+            <strong>Registration failed</strong>
+            <p>{{ error }}</p>
+          </div>
+        </div>
+      }
+
+      <button
+        mat-flat-button
+        class="signup-btn full-width"
+        type="submit"
+        [disabled]="(loading$ | async) || form.invalid"
+      >
+        @if (loading$ | async) {
+          <mat-spinner diameter="22"></mat-spinner>
+          <span>Creating account...</span>
+        } @else {
+          <span>Create account</span>
+        }
+      </button>
 
       <p class="terms-text">By joining you agree to our Terms and Privacy Policy.</p>
     </form>

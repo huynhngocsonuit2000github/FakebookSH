@@ -42,7 +42,7 @@ export class SigninForm {
     private store: Store,
   ) {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
 

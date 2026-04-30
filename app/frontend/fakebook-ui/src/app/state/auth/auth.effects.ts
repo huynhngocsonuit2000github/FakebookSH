@@ -20,7 +20,7 @@ export class AuthEffects {
           catchError((error) =>
             of(
               AuthActions.loginFailure({
-                error: error?.error?.message ?? 'Login failed',
+                error: this.getErrorMessage(error, 'Login failed'),
               }),
             ),
           ),
@@ -29,10 +29,28 @@ export class AuthEffects {
     ),
   );
 
-  loginSuccess$ = createEffect(
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.register),
+      switchMap(({ request }) =>
+        this.authService.register(request).pipe(
+          map((response) => AuthActions.registerSuccess({ response })),
+          catchError((error) =>
+            of(
+              AuthActions.registerFailure({
+                error: this.getErrorMessage(error, 'Registration failed'),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  authSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.loginSuccess),
+        ofType(AuthActions.loginSuccess, AuthActions.registerSuccess),
         tap(({ response }) => {
           localStorage.setItem('accessToken', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
@@ -74,4 +92,14 @@ export class AuthEffects {
       ),
     { dispatch: false },
   );
+
+  private getErrorMessage(error: unknown, fallback: string): string {
+    const httpError = error as { error?: { message?: string } | string };
+
+    if (typeof httpError?.error === 'string') {
+      return httpError.error;
+    }
+
+    return httpError?.error?.message ?? fallback;
+  }
 }

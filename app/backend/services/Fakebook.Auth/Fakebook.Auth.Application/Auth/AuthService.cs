@@ -30,6 +30,8 @@ public sealed class AuthService : IAuthService
 
     public async Task<Result<AuthResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
+        var firstName = NormalizeName(request.FirstName);
+        var lastName = NormalizeName(request.LastName);
         var email = NormalizeEmail(request.Email);
         var userName = NormalizeUserName(request.UserName);
 
@@ -41,7 +43,7 @@ public sealed class AuthService : IAuthService
         }
 
         var passwordHash = _passwordService.Hash(request.Password);
-        var newUser = CreateUser(email, userName, passwordHash);
+        var newUser = CreateUser(firstName, lastName, email, userName, passwordHash);
 
         await _userRepository.AddAsync(newUser, cancellationToken);
 
@@ -49,7 +51,7 @@ public sealed class AuthService : IAuthService
 
         await _userRepository.SaveChangesAsync(cancellationToken);
 
-        await _messagePublisher.PublishAsync(new UserRegisteredIntegrationEvent(newUser.Id, newUser.Email, newUser.UserName, DateTime.UtcNow), cancellationToken);
+        await _messagePublisher.PublishAsync(new UserRegisteredIntegrationEvent(newUser.Id, newUser.Email, newUser.UserName, newUser.FirstName, newUser.LastName, DateTime.UtcNow), cancellationToken);
 
         return Result<AuthResponse>.Success(response);
     }
@@ -127,7 +129,7 @@ public sealed class AuthService : IAuthService
             return Result<CurrentUserResponse>.Failure(new Error("user_not_found", "Current user was not found."));
         }
 
-        var response = new CurrentUserResponse(user.Id, user.Email, user.UserName);
+        var response = new CurrentUserResponse(user.Id, user.Email, user.UserName, user.FirstName, user.LastName);
 
         return Result<CurrentUserResponse>.Success(response);
     }
@@ -141,15 +143,17 @@ public sealed class AuthService : IAuthService
 
         await _refreshTokenRepository.AddAsync(CreateRefreshToken(user.Id, refreshToken.TokenHash, refreshToken.ExpiresAtUtc, new DateTimeOffset(_dateTimeProvider.UtcNow, TimeSpan.Zero)), CancellationToken.None);
 
-        return new AuthResponse(user.Id, user.Email, user.UserName, accessToken.Token, accessToken.ExpiresAtUtc, refreshToken.PlainToken, refreshToken.ExpiresAtUtc);
+        return new AuthResponse(user.Id, user.Email, user.UserName, user.FirstName, user.LastName, accessToken.Token, accessToken.ExpiresAtUtc, refreshToken.PlainToken, refreshToken.ExpiresAtUtc);
     }
 
-    private User CreateUser(string email, string userName, string passwordHash)
+    private User CreateUser(string firstName, string lastName, string email, string userName, string passwordHash)
     {
         var utcNow = _dateTimeProvider.UtcNow;
 
         return new User
         {
+            FirstName = firstName,
+            LastName = lastName,
             Email = email,
             UserName = userName,
             PasswordHash = passwordHash,
@@ -183,6 +187,11 @@ public sealed class AuthService : IAuthService
     private static string NormalizeEmail(string email)
     {
         return email.Trim().ToLowerInvariant();
+    }
+
+    private static string NormalizeName(string name)
+    {
+        return name.Trim();
     }
 
     private static string NormalizeUserName(string userName)

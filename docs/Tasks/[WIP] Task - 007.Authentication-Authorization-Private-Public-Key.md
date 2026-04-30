@@ -6,6 +6,6 @@
   - [x] Behavior when auto navigate to /signin manually (use Guard)
   - [x] Behavior when clicking on logout button by Action to go to sign
 - [x] Login
-- [ ] Register
+- [x] Register
 - [ ] Change core to use cookies base for BFF, but JWT for calling downstream system, use Private and public key [SEPARATED-TICKET]
 - [ ]

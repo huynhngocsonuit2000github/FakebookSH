@@ -4,6 +4,8 @@
         Guid UserId,
         string Email,
         string Username,
+        string FirstName,
+        string LastName,
         DateTime OccurredAtUtc
     );
 }

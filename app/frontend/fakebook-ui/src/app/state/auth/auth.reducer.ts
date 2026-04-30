@@ -25,6 +25,8 @@ const reducer = createReducer(
       userId: response.userId,
       email: response.email,
       userName: response.userName,
+      firstName: response.firstName,
+      lastName: response.lastName,
     },
     accessToken: response.accessToken,
     refreshToken: response.refreshToken,
@@ -33,6 +35,33 @@ const reducer = createReducer(
   })),
 
   on(AuthActions.loginFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+  on(AuthActions.register, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(AuthActions.registerSuccess, (state, { response }) => ({
+    ...state,
+    user: {
+      userId: response.userId,
+      email: response.email,
+      userName: response.userName,
+      firstName: response.firstName,
+      lastName: response.lastName,
+    },
+    accessToken: response.accessToken,
+    refreshToken: response.refreshToken,
+    loading: false,
+    error: null,
+  })),
+
+  on(AuthActions.registerFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error,

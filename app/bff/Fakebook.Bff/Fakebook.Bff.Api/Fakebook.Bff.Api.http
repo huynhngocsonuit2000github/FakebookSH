@@ -5,6 +5,19 @@ Accept: application/json
 
 ###
 
+POST {{Fakebook.Bff.Api_HostAddress}}/api/bff/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Demo",
+  "lastName": "User",
+  "email": "demo@fakebook.local",
+  "userName": "demouser",
+  "password": "P@ssw0rd!"
+}
+
+###
+
 POST {{Fakebook.Bff.Api_HostAddress}}/api/bff/auth/login
 Content-Type: application/json
 

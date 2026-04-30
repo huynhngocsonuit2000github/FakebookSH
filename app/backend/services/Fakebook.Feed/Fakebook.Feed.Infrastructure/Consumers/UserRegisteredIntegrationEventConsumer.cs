@@ -18,7 +18,7 @@ public sealed class UserRegisteredIntegrationEventConsumer : MessageConsumerBase
     {
         var message = context.Message;
 
-        _logger.LogInformation("User registered event received. UserId: {UserId}, Email: {Email}, Username: {Username}, OccurredAtUtc: {OccurredAtUtc}", message.UserId, message.Email, message.Username, message.OccurredAtUtc);
+        _logger.LogInformation("User registered event received. UserId: {UserId}, Email: {Email}, Username: {Username}, FirstName: {FirstName}, LastName: {LastName}, OccurredAtUtc: {OccurredAtUtc}", message.UserId, message.Email, message.Username, message.FirstName, message.LastName, message.OccurredAtUtc);
 
         return Task.CompletedTask;
     }

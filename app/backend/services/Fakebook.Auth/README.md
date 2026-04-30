@@ -107,6 +107,8 @@ POST /api/auth/register
 Content-Type: application/json
 
 {
+  "firstName": "Test",
+  "lastName": "User",
   "email": "test@example.com",
   "userName": "testuser",
   "password": "Password123!"
