@@ -69,4 +69,11 @@
   text-align: left;
   color: #607070;
   text-decoration: none;
+  cursor: pointer;
+
+  &.active,
+  &:hover {
+    background: #e5faf5;
+    color: #0da88f;
+  }
 }

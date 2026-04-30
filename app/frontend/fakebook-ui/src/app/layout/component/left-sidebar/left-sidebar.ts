@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '../../../state/auth/auth.actions';
 
 interface SidebarMenuItem {
   label: string;
@@ -16,6 +18,8 @@ interface SidebarMenuItem {
   styleUrl: './left-sidebar.scss',
 })
 export class LeftSidebar {
+  private store = inject(Store);
+
   menuItems: SidebarMenuItem[] = [
     { label: 'Home', route: '/feed', icon: 'home' },
     { label: 'Profile', route: '/profile', icon: 'person' },
@@ -27,4 +31,8 @@ export class LeftSidebar {
     { label: 'Media', route: '/media', icon: 'image' },
     { label: 'Settings', route: '/settings', icon: 'settings' },
   ];
+
+  logout(): void {
+    this.store.dispatch(AuthActions.logout());
+  }
 }

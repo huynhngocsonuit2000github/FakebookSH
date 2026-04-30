@@ -44,3 +44,17 @@
 .avatar-menu mat-icon {
   font-size: 18px;
 }
+
+.logout {
+  display: block;
+  width: 85%;
+  margin-top: 12px;
+  padding: 16px;
+  border: none;
+  border-top: 1px solid #dce8e6;
+  background: transparent;
+  text-align: left;
+  color: #607070;
+  text-decoration: none;
+  cursor: pointer;
+}

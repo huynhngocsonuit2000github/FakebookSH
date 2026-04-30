@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { PublicLayout } from './layout/public-layout/public-layout';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { authGuard } from './core/guards/auth.guard';
+import { unauthGuard } from './core/guards/auth.unguard';
 
 export const routes: Routes = [
   //   Public page
@@ -96,10 +97,12 @@ export const routes: Routes = [
   // Signin/signup page, with public layout
   {
     path: 'signin',
+    canActivate: [unauthGuard],
     loadComponent: () => import('./pages/signin/signin').then((m) => m.Signin),
   },
   {
     path: 'signup',
+    canActivate: [unauthGuard],
     loadComponent: () => import('./pages/signup/signup').then((m) => m.Signup),
   },
 ];
