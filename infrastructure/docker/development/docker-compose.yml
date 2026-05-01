@@ -1,6 +1,6 @@
 services:
   bff-api:
-    image: fakebook-bff:v1
+    image: fakebook-bff:v2
     container_name: fakebook-bff-api
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
@@ -16,7 +16,7 @@ services:
         condition: service_healthy
 
   auth-api:
-    image: fakebook-auth:v2
+    image: fakebook-auth:v3
     container_name: fakebook-auth-api
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
