@@ -1,7 +1,7 @@
 <div class="avatar-menu">
   <div class="avatar-menu__header">
-    <strong>Alex Rivera</strong>
-    <span>@alexrivera</span>
+    <strong>{{ (user$ | async)?.firstName }} {{ (user$ | async)?.lastName }}</strong>
+    <span>@{{ (user$ | async)?.userName }}</span>
   </div>
 
   <a routerLink="/profile">

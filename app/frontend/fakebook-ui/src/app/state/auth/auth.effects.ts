@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap, tap } from 'rxjs';
 import { AuthActions } from './auth.actions';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -76,6 +76,36 @@ export class AuthEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  restoreAuth$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.restoreAuth),
+      exhaustMap(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        if (!accessToken) {
+          return of(AuthActions.restoreAuthFailure());
+        }
+
+        return this.authService.getMe().pipe(
+          map((user) =>
+            AuthActions.restoreAuthSuccess({
+              accessToken,
+              refreshToken,
+              user,
+            }),
+          ),
+          catchError(() => {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+
+            return of(AuthActions.restoreAuthFailure());
+          }),
+        );
+      }),
     ),
   );
 

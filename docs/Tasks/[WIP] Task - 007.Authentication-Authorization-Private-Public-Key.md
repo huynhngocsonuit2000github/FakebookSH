@@ -7,5 +7,6 @@
   - [x] Behavior when clicking on logout button by Action to go to sign
 - [x] Login
 - [x] Register
+- [x] Display my information to the UI
 - [ ] Change core to use cookies base for BFF, but JWT for calling downstream system, use Private and public key [SEPARATED-TICKET]
 - [ ]

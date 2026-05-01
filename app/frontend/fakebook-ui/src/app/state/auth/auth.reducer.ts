@@ -87,6 +87,29 @@ const reducer = createReducer(
     error,
   })),
 
+  on(AuthActions.restoreAuth, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(AuthActions.restoreAuthSuccess, (state, { accessToken, refreshToken, user }) => ({
+    ...state,
+    user,
+    accessToken,
+    refreshToken,
+    loading: false,
+    error: null,
+  })),
+
+  on(AuthActions.restoreAuthFailure, () => ({
+    user: null,
+    accessToken: null,
+    refreshToken: null,
+    loading: false,
+    error: null,
+  })),
+
   on(AuthActions.logout, () => ({
     user: null,
     accessToken: null,

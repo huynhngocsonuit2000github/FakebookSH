@@ -3,8 +3,8 @@
     <img src="/assets/design/1.avatar.webp" alt="User avatar" />
 
     <div>
-      <strong>Son Huynh</strong>
-      <span>@huynhs123</span>
+      <strong>{{ (user$ | async)?.firstName }} {{ (user$ | async)?.lastName }}</strong>
+      <span>@{{ (user$ | async)?.userName }}</span>
     </div>
   </a>
 

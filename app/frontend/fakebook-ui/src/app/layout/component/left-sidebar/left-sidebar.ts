@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AuthActions } from '../../../state/auth/auth.actions';
+import { selectAuthUser } from '../../../state/auth/auth.reducer';
 
 interface SidebarMenuItem {
   label: string;
@@ -19,6 +20,11 @@ interface SidebarMenuItem {
 })
 export class LeftSidebar {
   private store = inject(Store);
+  user$;
+
+  constructor() {
+    this.user$ = this.store.select(selectAuthUser);
+  }
 
   menuItems: SidebarMenuItem[] = [
     { label: 'Home', route: '/feed', icon: 'home' },

@@ -1,5 +1,11 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { AuthUser, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from './auth.models';
+import {
+  AuthUser,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from './auth.models';
 
 export const AuthActions = createActionGroup({
   source: 'Auth',
@@ -15,6 +21,14 @@ export const AuthActions = createActionGroup({
     'Load Me': emptyProps(),
     'Load Me Success': props<{ user: AuthUser }>(),
     'Load Me Failure': props<{ error: string }>(),
+
+    'Restore Auth': emptyProps(),
+    'Restore Auth Success': props<{
+      accessToken: string;
+      refreshToken: string | null;
+      user: AuthUser;
+    }>(),
+    'Restore Auth Failure': emptyProps(),
 
     Logout: emptyProps(),
   },
