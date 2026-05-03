@@ -11,6 +11,7 @@ COPY app/bff/Fakebook.Bff/Fakebook.Bff.Api/Fakebook.Bff.Api.csproj app/bff/Fakeb
 COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Api/Fakebook.BuildingBlocks.Api.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Api/
 COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Application/Fakebook.BuildingBlocks.Application.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Application/
 COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Domain/Fakebook.BuildingBlocks.Domain.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Domain/
+COPY app/backend/building-blocks/Fakebook.BuildingBlocks.Infrastructure/Fakebook.BuildingBlocks.Infrastructure.csproj app/backend/building-blocks/Fakebook.BuildingBlocks.Infrastructure/
 
 RUN dotnet restore app/bff/Fakebook.Bff/Fakebook.Bff.Api/Fakebook.Bff.Api.csproj
 

@@ -47,10 +47,17 @@ export class AuthEffects {
     ),
   );
 
-  authSuccess$ = createEffect(
+  authSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loginSuccess, AuthActions.registerSuccess),
+      map(() => AuthActions.loadMe()),
+    ),
+  );
+
+  navigateAfterLoadMe$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.loginSuccess, AuthActions.registerSuccess),
+        ofType(AuthActions.loadMeSuccess),
         tap(() => {
           this.router.navigate(['/feed']);
         }),

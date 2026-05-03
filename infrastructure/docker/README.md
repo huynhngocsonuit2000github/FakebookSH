@@ -7,7 +7,7 @@
 
 - cd to root
   docker build -f infrastructure\docker\docker-files\Fakebook.Auth.Dockerfile -t fakebook-auth:v4 .
-  docker build -f infrastructure\docker\docker-files\Fakebook.Bff.Dockerfile -t fakebook-bff:v3 .
+  docker build -f infrastructure\docker\docker-files\Fakebook.Bff.Dockerfile -t fakebook-bff:v4 .
 
 # Run the docker compose file
 

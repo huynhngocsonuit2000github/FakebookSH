@@ -1,6 +1,6 @@
 services:
   bff-api:
-    image: fakebook-bff:v3
+    image: fakebook-bff:v4
     container_name: fakebook-bff-api
     environment:
       ASPNETCORE_ENVIRONMENT: Docker

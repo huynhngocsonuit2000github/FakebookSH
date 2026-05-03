@@ -1,4 +1,4 @@
-# fakebook-bff:v4
+# fakebook-bff:v5
 
 - [v1] support: https
 - [v1] call to downstream service via http
@@ -6,10 +6,11 @@
 - [v2] message queue
 - [v3] support full payload for signup
 - [v4] support cookies base authentication/authorization for angular, jwt for downstream services
+- [v4] apply redis for storing the cookies information, and the user browser just store the cookies id
 
 # fakebook-auth:v3
 
 - [v1] support auth endpoint
-- [v1] message queue
-- [v2] update register api
-- [v3] support cookies base authentication/authorization for angular, jwt for downstream services
+- [v2] message queue
+- [v3] update register api
+- [v4] support cookies base authentication/authorization for angular, jwt for downstream services
