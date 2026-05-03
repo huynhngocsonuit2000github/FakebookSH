@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Fakebook.BuildingBlocks.Infrastructure.Caching;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 
@@ -10,9 +11,9 @@ public sealed class DistributedCacheTicketStore : ITicketStore
     private const string KeyPrefix = "session:";
 
     private readonly IDistributedCache _cache;
-    private readonly RedisSessionOptions _options;
+    private readonly RedisCacheOptions _options;
 
-    public DistributedCacheTicketStore(IDistributedCache cache, IOptions<RedisSessionOptions> options)
+    public DistributedCacheTicketStore(IDistributedCache cache, IOptions<RedisCacheOptions> options)
     {
         _cache = cache;
         _options = options.Value;
@@ -60,7 +61,7 @@ public sealed class DistributedCacheTicketStore : ITicketStore
 
         return new DistributedCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_options.DefaultSessionMinutes)
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_options.DefaultExpirationMinutes)
         };
     }
 }

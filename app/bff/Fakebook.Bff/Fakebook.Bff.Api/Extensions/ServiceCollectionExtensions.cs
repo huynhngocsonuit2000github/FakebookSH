@@ -1,6 +1,7 @@
 using Fakebook.Bff.Api.Downstreams.Shared;
 using Fakebook.Bff.Api.Security;
 using Fakebook.BuildingBlocks.Api.Extensions;
+using Fakebook.BuildingBlocks.Infrastructure.Caching;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
 
@@ -29,22 +30,7 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddBffAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services
-            .AddOptions<RedisSessionOptions>()
-            .Bind(configuration.GetSection(RedisSessionOptions.SectionName))
-            .Validate(options => !string.IsNullOrWhiteSpace(options.ConnectionString), "Redis.ConnectionString is required.")
-            .Validate(options => options.DefaultSessionMinutes > 0, "Redis.DefaultSessionMinutes must be greater than zero.")
-            .ValidateOnStart();
-
-        services.AddStackExchangeRedisCache(options =>
-        {
-            var redisOptions = configuration.GetSection(RedisSessionOptions.SectionName).Get<RedisSessionOptions>()
-                ?? throw new InvalidOperationException("Redis configuration is missing.");
-
-            options.Configuration = redisOptions.ConnectionString;
-            options.InstanceName = redisOptions.InstanceName;
-        });
-
+        services.AddFakebookRedisCache(configuration);
         services.AddSingleton<ITicketStore, DistributedCacheTicketStore>();
         services.AddSingleton<IPostConfigureOptions<CookieAuthenticationOptions>, CookieSessionStorePostConfigureOptions>();
 

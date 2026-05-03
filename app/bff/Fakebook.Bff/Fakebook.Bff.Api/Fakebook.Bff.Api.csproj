@@ -8,12 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\backend\building-blocks\Fakebook.BuildingBlocks.Api\Fakebook.BuildingBlocks.Api.csproj" />
     <ProjectReference Include="..\..\..\backend\building-blocks\Fakebook.BuildingBlocks.Application\Fakebook.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\..\backend\building-blocks\Fakebook.BuildingBlocks.Infrastructure\Fakebook.BuildingBlocks.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

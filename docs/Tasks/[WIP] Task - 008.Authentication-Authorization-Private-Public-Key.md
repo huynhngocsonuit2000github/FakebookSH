@@ -5,3 +5,4 @@
   - [x] before apply: 2571
   - [x] after apply: 323
 - [x] Apply redis database for storing cookies ticket information, and just return the session id to the browser
+- [x] Create redis core in the building blocks fore future using ICacheService
