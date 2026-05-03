@@ -1,8 +1,6 @@
 using Fakebook.Bff.Api.Downstreams.Shared;
 using Fakebook.BuildingBlocks.Api.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Fakebook.Bff.Api.Extensions;
 
@@ -19,7 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddFakebookCorrelationIdDelegatingHandler();
         services.AddTransient<DownstreamRequestContextHandler>();
 
-        services.AddBffAuthentication(configuration);
+        services.AddBffAuthentication();
         services.AddBffCors(configuration);
 
         services.AddDownstreamApiClientServices(configuration);
@@ -27,24 +25,31 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static IServiceCollection AddBffAuthentication(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddBffAuthentication(this IServiceCollection services)
     {
-        var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ?? throw new InvalidOperationException("Jwt configuration is missing.");
-
         services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+            .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                options.Cookie.Name = "__Host-Fakebook.Bff";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Path = "/";
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.SlidingExpiration = false;
+
+                options.Events = new CookieAuthenticationEvents
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = jwtOptions.Issuer,
-                    ValidAudience = jwtOptions.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
-                    ClockSkew = TimeSpan.FromSeconds(30)
+                    OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    },
+                    OnRedirectToAccessDenied = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -68,7 +73,7 @@ public static class ServiceCollectionExtensions
             {
                 if (allowedOrigins.Length == 0)
                 {
-                    policy.AllowAnyOrigin();
+                    policy.SetIsOriginAllowed(_ => true);
                 }
                 else
                 {
@@ -77,20 +82,10 @@ public static class ServiceCollectionExtensions
 
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
+                policy.AllowCredentials();
             });
         });
 
         return services;
-    }
-
-    private sealed class JwtOptions
-    {
-        public const string SectionName = "Jwt";
-
-        public string Issuer { get; init; } = string.Empty;
-
-        public string Audience { get; init; } = string.Empty;
-
-        public string SigningKey { get; init; } = string.Empty;
     }
 }

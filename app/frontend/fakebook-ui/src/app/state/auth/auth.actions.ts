@@ -23,11 +23,7 @@ export const AuthActions = createActionGroup({
     'Load Me Failure': props<{ error: string }>(),
 
     'Restore Auth': emptyProps(),
-    'Restore Auth Success': props<{
-      accessToken: string;
-      refreshToken: string | null;
-      user: AuthUser;
-    }>(),
+    'Restore Auth Success': props<{ user: AuthUser }>(),
     'Restore Auth Failure': emptyProps(),
 
     Logout: emptyProps(),

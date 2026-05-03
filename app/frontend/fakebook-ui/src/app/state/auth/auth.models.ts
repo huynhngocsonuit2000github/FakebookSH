@@ -19,25 +19,12 @@ export interface AuthUser {
   lastName: string;
 }
 
-export interface AuthResponse {
-  userId: string;
-  email: string;
-  userName: string;
-  firstName: string;
-  lastName: string;
-  accessToken: string;
-  accessTokenExpiresAtUtc: string;
-  refreshToken: string;
-  refreshTokenExpiresAtUtc: string;
-}
-
-export type LoginResponse = AuthResponse;
-export type RegisterResponse = AuthResponse;
+export type LoginResponse = AuthUser;
+export type RegisterResponse = AuthUser;
 
 export interface AuthState {
   user: AuthUser | null;
-  accessToken: string | null;
-  refreshToken: string | null;
+  initialized: boolean;
   loading: boolean;
   error: string | null;
 }

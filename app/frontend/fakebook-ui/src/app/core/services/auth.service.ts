@@ -13,7 +13,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly baseUrl = 'https://localhost:7000/api/bff/auth';
+  private readonly baseUrl = 'https://localhost:7000/api/bff/auth'; // 5000 is used for local debugging, 7000 is used for docker
 
   constructor(private http: HttpClient) {}
 
@@ -23,6 +23,14 @@ export class AuthService {
 
   register(request: RegisterRequest): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(`${this.baseUrl}/register`, request);
+  }
+
+  refreshToken(): Observable<AuthUser> {
+    return this.http.post<AuthUser>(`${this.baseUrl}/refresh-token`, {});
+  }
+
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/logout`, {});
   }
 
   getMe(): Observable<AuthUser> {

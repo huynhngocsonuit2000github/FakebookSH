@@ -4,8 +4,7 @@ import { AuthState } from './auth.models';
 
 export const initialAuthState: AuthState = {
   user: null,
-  accessToken: localStorage.getItem('accessToken'),
-  refreshToken: localStorage.getItem('refreshToken'),
+  initialized: false,
   loading: false,
   error: null,
 };
@@ -21,15 +20,8 @@ const reducer = createReducer(
 
   on(AuthActions.loginSuccess, (state, { response }) => ({
     ...state,
-    user: {
-      userId: response.userId,
-      email: response.email,
-      userName: response.userName,
-      firstName: response.firstName,
-      lastName: response.lastName,
-    },
-    accessToken: response.accessToken,
-    refreshToken: response.refreshToken,
+    user: response,
+    initialized: true,
     loading: false,
     error: null,
   })),
@@ -48,15 +40,8 @@ const reducer = createReducer(
 
   on(AuthActions.registerSuccess, (state, { response }) => ({
     ...state,
-    user: {
-      userId: response.userId,
-      email: response.email,
-      userName: response.userName,
-      firstName: response.firstName,
-      lastName: response.lastName,
-    },
-    accessToken: response.accessToken,
-    refreshToken: response.refreshToken,
+    user: response,
+    initialized: true,
     loading: false,
     error: null,
   })),
@@ -76,6 +61,7 @@ const reducer = createReducer(
   on(AuthActions.loadMeSuccess, (state, { user }) => ({
     ...state,
     user,
+    initialized: true,
     loading: false,
     error: null,
   })),
@@ -83,6 +69,7 @@ const reducer = createReducer(
   on(AuthActions.loadMeFailure, (state, { error }) => ({
     ...state,
     user: null,
+    initialized: true,
     loading: false,
     error,
   })),
@@ -93,27 +80,24 @@ const reducer = createReducer(
     error: null,
   })),
 
-  on(AuthActions.restoreAuthSuccess, (state, { accessToken, refreshToken, user }) => ({
+  on(AuthActions.restoreAuthSuccess, (state, { user }) => ({
     ...state,
     user,
-    accessToken,
-    refreshToken,
+    initialized: true,
     loading: false,
     error: null,
   })),
 
   on(AuthActions.restoreAuthFailure, () => ({
     user: null,
-    accessToken: null,
-    refreshToken: null,
+    initialized: true,
     loading: false,
     error: null,
   })),
 
   on(AuthActions.logout, () => ({
     user: null,
-    accessToken: null,
-    refreshToken: null,
+    initialized: true,
     loading: false,
     error: null,
   })),
@@ -123,8 +107,8 @@ export const authFeature = createFeature({
   name: 'auth',
   reducer,
 
-  extraSelectors: ({ selectAccessToken }) => ({
-    selectIsAuthenticated: createSelector(selectAccessToken, (accessToken) => !!accessToken),
+  extraSelectors: ({ selectUser }) => ({
+    selectIsAuthenticated: createSelector(selectUser, (user) => !!user),
   }),
 });
 
@@ -134,8 +118,7 @@ export const {
 
   selectAuthState,
   selectUser: selectAuthUser,
-  selectAccessToken,
-  selectRefreshToken,
+  selectInitialized: selectAuthInitialized,
   selectLoading: selectAuthLoading,
   selectError: selectAuthError,
   selectIsAuthenticated,

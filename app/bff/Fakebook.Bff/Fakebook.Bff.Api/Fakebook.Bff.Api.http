@@ -29,5 +29,13 @@ Content-Type: application/json
 ###
 
 GET {{Fakebook.Bff.Api_HostAddress}}/api/bff/auth/me
-Authorization: Bearer {{access_token}}
 Accept: application/json
+
+###
+
+POST {{Fakebook.Bff.Api_HostAddress}}/api/bff/auth/refresh-token
+Accept: application/json
+
+###
+
+POST {{Fakebook.Bff.Api_HostAddress}}/api/bff/auth/logout

@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace Fakebook.Auth.Infrastructure.DependencyInjection;
 
@@ -49,7 +48,7 @@ public static class InfrastructureServiceCollectionExtensions
                     ValidateLifetime = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidAudience = jwtOptions.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
+                    IssuerSigningKey = RsaSecurityKeyFactory.CreatePublicKey(jwtOptions.PublicKeyPem),
                     ClockSkew = TimeSpan.FromSeconds(30)
                 };
             });

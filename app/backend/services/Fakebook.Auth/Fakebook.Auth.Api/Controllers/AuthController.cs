@@ -48,6 +48,7 @@ public sealed class AuthController : ApiControllerBase
     }
 
     [HttpGet("me")]
+    [Authorize]
     public async Task<IActionResult> Me(CancellationToken cancellationToken)
     {
         var userIdText = User.FindFirstValue(ClaimTypes.NameIdentifier);
