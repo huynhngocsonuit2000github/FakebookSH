@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { PostCreateModal } from '../post-create-modal/post-create-modal';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CreatePostRequest } from '../../../../core/models/feed.models';
+import { PostCreateModal } from '../post-create-modal/post-create-modal';
 
 @Component({
   selector: 'app-post-create',
@@ -9,22 +10,22 @@ import { CommonModule } from '@angular/common';
   styleUrl: './post-create.scss',
 })
 export class PostCreate {
-  @Output() postCreated = new EventEmitter<string>();
+  @Output() postCreated = new EventEmitter<CreatePostRequest>();
 
   username = 'Alex';
   avatar = '/assets/design/1.avatar.webp';
   showCreatePostModal = false;
 
-  openModal() {
+  openModal(): void {
     this.showCreatePostModal = true;
   }
 
-  closeModal() {
+  closeModal(): void {
     this.showCreatePostModal = false;
   }
 
-  createPost(content: string) {
-    this.postCreated.emit(content);
+  createPost(request: CreatePostRequest): void {
+    this.postCreated.emit(request);
     this.closeModal();
   }
 }

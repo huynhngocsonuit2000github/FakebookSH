@@ -10,6 +10,8 @@ public sealed class Post : AuditableEntity
     public string Avatar { get; set; } = string.Empty;
     public string Visibility { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
+    public string? Feeling { get; set; }
+    public string? Location { get; set; }
     public string? Image { get; set; }
     public int BaseLikeCount { get; set; }
     public int ShareCount { get; set; }

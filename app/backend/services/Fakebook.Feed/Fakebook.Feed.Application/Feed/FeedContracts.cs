@@ -11,6 +11,8 @@ public sealed record FeedPostResponse(
     string Time,
     string Visibility,
     string Content,
+    string? Feeling,
+    string? Location,
     IReadOnlyList<string> Hashtags,
     string? Image,
     int LikeCount,
@@ -28,6 +30,12 @@ public sealed record FeedCommentResponse(
     string Text,
     int Likes);
 
-public sealed record CreatePostRequest(string Content, string Visibility = "friends", string? Image = null);
+public sealed record CreatePostRequest(
+    string Content,
+    string Visibility = "friends",
+    string? Feeling = null,
+    string? Location = null,
+    IReadOnlyList<string>? Hashtags = null,
+    string? Image = null);
 
 public sealed record AddCommentRequest(string Text);

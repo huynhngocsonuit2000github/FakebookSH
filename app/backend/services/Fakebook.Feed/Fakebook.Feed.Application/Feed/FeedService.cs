@@ -1,6 +1,5 @@
 using Fakebook.Feed.Application.Boundary.Repositories;
 using Fakebook.Feed.Domain.Entities;
-using System.Text.RegularExpressions;
 
 namespace Fakebook.Feed.Application.Feed;
 
@@ -56,12 +55,14 @@ public sealed class FeedService : IFeedService
             Avatar = currentUser.Avatar,
             Visibility = NormalizeVisibility(request.Visibility),
             Content = request.Content.Trim(),
+            Feeling = NormalizeOptionalText(request.Feeling),
+            Location = NormalizeOptionalText(request.Location),
             Image = string.IsNullOrWhiteSpace(request.Image) ? null : request.Image.Trim(),
             BaseLikeCount = 0,
             ShareCount = 0,
             CreatedAtUtc = utcNow,
             UpdatedAtUtc = utcNow,
-            Hashtags = ExtractHashtags(request.Content)
+            Hashtags = NormalizeHashtags(request.Hashtags)
                 .Select(tag => new PostHashtag { Tag = tag })
                 .ToList()
         };
@@ -230,6 +231,8 @@ public sealed class FeedService : IFeedService
             ToRelativeTime(post.CreatedAtUtc),
             post.Visibility,
             post.Content,
+            post.Feeling,
+            post.Location,
             post.Hashtags.OrderBy(hashtag => hashtag.Tag).Select(hashtag => hashtag.Tag).ToList(),
             post.Image,
             post.BaseLikeCount + post.Reactions.Count,
@@ -249,10 +252,25 @@ public sealed class FeedService : IFeedService
             : "friends";
     }
 
-    private static List<string> ExtractHashtags(string content)
+    private static string? NormalizeOptionalText(string? value)
     {
-        return Regex.Matches(content, @"#[\w-]+")
-            .Select(match => match.Value)
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private static List<string> NormalizeHashtags(IReadOnlyList<string>? hashtags)
+    {
+        if (hashtags is null || hashtags.Count == 0)
+        {
+            return [];
+        }
+
+        return hashtags
+            .Where(tag => !string.IsNullOrWhiteSpace(tag))
+            .Select(tag =>
+            {
+                var normalized = tag.Trim().Replace(" ", string.Empty);
+                return normalized.StartsWith('#') ? normalized : $"#{normalized}";
+            })
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList();
     }

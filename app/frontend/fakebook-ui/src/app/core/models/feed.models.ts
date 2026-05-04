@@ -17,6 +17,8 @@ export interface FeedPost {
   time: string;
   visibility: string;
   content: string;
+  feeling: string | null;
+  location: string | null;
   hashtags: string[];
   image: string | null;
   likeCount: number;
@@ -29,6 +31,9 @@ export interface FeedPost {
 export interface CreatePostRequest {
   content: string;
   visibility: string;
+  feeling?: string | null;
+  location?: string | null;
+  hashtags?: string[];
   image?: string | null;
 }
 

@@ -44,6 +44,14 @@ public sealed class PostConfiguration : IEntityTypeConfiguration<Post>
             .HasMaxLength(4000)
             .IsRequired();
 
+        builder.Property(post => post.Feeling)
+            .HasColumnName("feeling")
+            .HasMaxLength(120);
+
+        builder.Property(post => post.Location)
+            .HasColumnName("location")
+            .HasMaxLength(200);
+
         builder.Property(post => post.Image)
             .HasColumnName("image")
             .HasMaxLength(512);

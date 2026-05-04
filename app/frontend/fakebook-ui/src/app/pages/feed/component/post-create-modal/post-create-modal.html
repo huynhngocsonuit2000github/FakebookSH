@@ -2,7 +2,7 @@
   <div class="modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h2>Create a post</h2>
-      <button type="button" class="close-btn" (click)="onClose()">×</button>
+      <button type="button" class="close-btn" (click)="onClose()">x</button>
     </div>
 
     <div class="user-row">
@@ -10,7 +10,26 @@
 
       <div>
         <div class="name">Son Huynh</div>
-        <div class="privacy">👥 Friends</div>
+
+        <div class="privacy-switch">
+          <button
+            type="button"
+            [class.active]="visibility === 'friends'"
+            (click)="visibility = 'friends'"
+          >
+            <mat-icon>people</mat-icon>
+            Friends
+          </button>
+
+          <button
+            type="button"
+            [class.active]="visibility === 'public'"
+            (click)="visibility = 'public'"
+          >
+            <mat-icon>public</mat-icon>
+            Public
+          </button>
+        </div>
       </div>
     </div>
 
@@ -18,17 +37,64 @@
       [(ngModel)]="content"
       placeholder="Share something with your friends..."
       maxlength="500"
-    >
-    </textarea>
+    ></textarea>
 
-    <div class="add-box">
-      <span>Add to your post</span>
+    <div class="field-grid">
+      <label class="field">
+        <span>Image URL</span>
+        <input
+          type="url"
+          [(ngModel)]="image"
+          placeholder="https://images.example.com/photo.jpg"
+        />
+      </label>
 
-      <div class="icons">
-        <button type="button" class="photo"><mat-icon>image</mat-icon></button>
-        <button type="button" class="feeling"><mat-icon>sentiment_satisfied</mat-icon></button>
-        <button type="button" class="location"><mat-icon>location_on</mat-icon></button>
+      <label class="field">
+        <span>Feeling</span>
+        <input
+          type="text"
+          [(ngModel)]="feeling"
+          placeholder="Excited, focused, grateful..."
+          maxlength="60"
+        />
+      </label>
+
+      <label class="field">
+        <span>Location</span>
+        <input
+          type="text"
+          [(ngModel)]="location"
+          placeholder="Ho Chi Minh City, Office, Home..."
+          maxlength="100"
+        />
+      </label>
+
+      <div class="field hashtag-field">
+        <span>Hashtags</span>
+
+        <div class="hashtag-entry">
+          <input
+            type="text"
+            [(ngModel)]="hashtagInput"
+            (keydown.enter)="handleHashtagEnter($event)"
+            placeholder="#angular"
+            maxlength="40"
+          />
+
+          <button type="button" class="add-tag-btn" (click)="addHashtag()">Add</button>
+        </div>
+
+        <div class="hashtag-list" *ngIf="hashtags.length > 0">
+          <button type="button" class="tag-chip" *ngFor="let tag of hashtags" (click)="removeHashtag(tag)">
+            <span>{{ tag }}</span>
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
       </div>
+    </div>
+
+    <div class="image-preview" *ngIf="image.trim()">
+      <img [src]="image.trim()" alt="Preview image" />
     </div>
 
     <div class="footer">

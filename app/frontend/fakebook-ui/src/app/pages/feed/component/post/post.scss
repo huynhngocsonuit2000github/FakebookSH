@@ -76,9 +76,34 @@
 
 .hashtags {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   color: #009688;
   font-size: 14px;
+}
+
+.post-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef7f6;
+  color: #45615a;
+  font-size: 13px;
+
+  mat-icon {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+  }
 }
 
 .post-image {

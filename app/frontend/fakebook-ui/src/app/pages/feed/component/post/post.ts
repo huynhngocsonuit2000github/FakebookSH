@@ -21,6 +21,8 @@ export class Post {
     time: '0m',
     visibility: 'public',
     content: '',
+    feeling: null,
+    location: null,
     hashtags: [],
     image: null,
     likeCount: 0,

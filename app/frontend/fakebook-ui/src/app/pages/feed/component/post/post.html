@@ -22,7 +22,19 @@
   </div>
 
   <div class="post-content">
-    <p>{{ post.content }}</p>
+    <p *ngIf="post.content">{{ post.content }}</p>
+
+    <div class="post-meta-tags" *ngIf="post.feeling || post.location">
+      <span *ngIf="post.feeling" class="meta-chip">
+        <mat-icon>sentiment_satisfied</mat-icon>
+        Feeling {{ post.feeling }}
+      </span>
+
+      <span *ngIf="post.location" class="meta-chip">
+        <mat-icon>location_on</mat-icon>
+        {{ post.location }}
+      </span>
+    </div>
 
     <div class="hashtags">
       <span *ngFor="let tag of post.hashtags">{{ tag }}</span>

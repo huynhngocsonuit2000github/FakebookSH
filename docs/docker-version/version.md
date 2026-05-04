@@ -1,4 +1,4 @@
-# fakebook-bff:v5
+# fakebook-bff:v6
 
 - [v1] support: https
 - [v1] call to downstream service via http
@@ -8,6 +8,7 @@
 - [v4] support cookies base authentication/authorization for angular, jwt for downstream services
 - [v4] apply redis for storing the cookies information, and the user browser just store the cookies id
 - [v5] list of feed endpoint for home, profile and saved pages integration
+- [v6] create post with more complex data and images
 
 # fakebook-auth:v4
 
@@ -16,6 +17,7 @@
 - [v3] update register api
 - [v4] support cookies base authentication/authorization for angular, jwt for downstream services
 
-# fakebook-feed:v1
+# fakebook-feed:v2
 
 - [v1] list of feed endpoint for home, profile and saved pages integration
+- [v2] create post with more complex data and images

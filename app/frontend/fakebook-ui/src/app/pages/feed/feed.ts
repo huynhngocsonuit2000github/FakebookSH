@@ -6,7 +6,7 @@ import { PostCreate } from './component/post-create/post-create';
 import { Post } from './component/post/post';
 import { RightSidebar } from './component/right-sidebar/right-sidebar';
 import { FeedService } from '../../core/services/feed.service';
-import { FeedPost } from '../../core/models/feed.models';
+import { CreatePostRequest, FeedPost } from '../../core/models/feed.models';
 
 @Component({
   selector: 'app-feed',
@@ -43,8 +43,8 @@ export class Feed implements OnInit {
     });
   }
 
-  createPost(content: string): void {
-    this.feedService.createPost({ content, visibility: 'friends' }).subscribe({
+  createPost(request: CreatePostRequest): void {
+    this.feedService.createPost(request).subscribe({
       next: () => {
         this.error = null;
       },
