@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { PostCreateModal } from '../post-create-modal/post-create-modal';
 import { CommonModule } from '@angular/common';
 
@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './post-create.scss',
 })
 export class PostCreate {
+  @Output() postCreated = new EventEmitter<string>();
+
   username = 'Alex';
   avatar = '/assets/design/1.avatar.webp';
   showCreatePostModal = false;
@@ -19,5 +21,10 @@ export class PostCreate {
 
   closeModal() {
     this.showCreatePostModal = false;
+  }
+
+  createPost(content: string) {
+    this.postCreated.emit(content);
+    this.closeModal();
   }
 }

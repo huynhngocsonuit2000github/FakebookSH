@@ -2,29 +2,29 @@
   <div class="top-row">
     <img class="avatar" [src]="avatar" alt="User avatar" />
 
-    <button type="button" class="post-input" (click)="openModal()">
-      What’s on your mind, Son Huynh?
-    </button>
+    <button type="button" class="post-input" (click)="openModal()">What's on your mind?</button>
   </div>
 
   <div class="divider"></div>
 
   <div class="actions">
     <button type="button" class="action photo">
-      <span class="icon">▧</span>
-      Photo
+      <span class="icon">Photo</span>
     </button>
 
     <button type="button" class="action feeling">
-      <span class="icon">☺</span>
-      Feeling
+      <span class="icon">Feeling</span>
     </button>
 
     <button type="button" class="action location">
-      <span class="icon">⌖</span>
-      Location
+      <span class="icon">Location</span>
     </button>
   </div>
 </div>
 
-<app-post-create-modal *ngIf="showCreatePostModal" (close)="closeModal()"> </app-post-create-modal>
+<app-post-create-modal
+  *ngIf="showCreatePostModal"
+  (close)="closeModal()"
+  (create)="createPost($event)"
+>
+</app-post-create-modal>

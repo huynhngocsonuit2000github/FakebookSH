@@ -1,4 +1,5 @@
 using Fakebook.Bff.Api.Downstreams.Auth;
+using Fakebook.Bff.Api.Downstreams.Feed;
 using Fakebook.Bff.Api.Downstreams.Shared;
 using Fakebook.BuildingBlocks.Api.Handlers;
 using Microsoft.Extensions.Options;
@@ -10,8 +11,7 @@ public static class DownstreamApiClientExtensions
     public static IServiceCollection AddDownstreamApiClientServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDownstreamAuthApi(configuration);
-
-        // Later: Add additional downstream API clients here following the same pattern:
+        services.AddDownstreamFeedApi(configuration);
 
         return services;
     }
@@ -19,6 +19,11 @@ public static class DownstreamApiClientExtensions
     private static IServiceCollection AddDownstreamAuthApi(this IServiceCollection services, IConfiguration configuration)
     {
         return services.AddDownstreamApiClientGeneric<IAuthApiClient, AuthApiClient, AuthApiOptions>(configuration, AuthApiOptions.SectionName);
+    }
+
+    private static IServiceCollection AddDownstreamFeedApi(this IServiceCollection services, IConfiguration configuration)
+    {
+        return services.AddDownstreamApiClientGeneric<IFeedApiClient, FeedApiClient, FeedApiOptions>(configuration, FeedApiOptions.SectionName);
     }
 
     private static IServiceCollection AddDownstreamApiClientGeneric<TClient, TImplementation, TOptions>(this IServiceCollection services, IConfiguration configuration, string sectionName) where TClient : class where TImplementation : class, TClient where TOptions : DownstreamApiOptions

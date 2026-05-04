@@ -1,4 +1,5 @@
 **/obj/*
 **/bin/*
+**/Debug/*
 **/.vs/*
 .dotnet-cli-home/*

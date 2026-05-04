@@ -6,8 +6,9 @@
 # How to run the docker file to docker image
 
 - cd to root
+  docker build -f infrastructure\docker\docker-files\Fakebook.Feed.Dockerfile -t fakebook-feed:v1 .
   docker build -f infrastructure\docker\docker-files\Fakebook.Auth.Dockerfile -t fakebook-auth:v4 .
-  docker build -f infrastructure\docker\docker-files\Fakebook.Bff.Dockerfile -t fakebook-bff:v4 .
+  docker build -f infrastructure\docker\docker-files\Fakebook.Bff.Dockerfile -t fakebook-bff:v5 .
 
 # Run the docker compose file
 

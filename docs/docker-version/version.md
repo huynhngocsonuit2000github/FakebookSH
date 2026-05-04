@@ -7,10 +7,15 @@
 - [v3] support full payload for signup
 - [v4] support cookies base authentication/authorization for angular, jwt for downstream services
 - [v4] apply redis for storing the cookies information, and the user browser just store the cookies id
+- [v5] list of feed endpoint for home, profile and saved pages integration
 
-# fakebook-auth:v3
+# fakebook-auth:v4
 
 - [v1] support auth endpoint
 - [v2] message queue
 - [v3] update register api
 - [v4] support cookies base authentication/authorization for angular, jwt for downstream services
+
+# fakebook-feed:v1
+
+- [v1] list of feed endpoint for home, profile and saved pages integration

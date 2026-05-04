@@ -1,9 +1,74 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { FeedService } from '../../core/services/feed.service';
+import { FeedPost } from '../../core/models/feed.models';
+import { Post } from '../feed/component/post/post';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
+  imports: [CommonModule, Post],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
-export class Profile {}
+export class Profile implements OnInit {
+  readonly posts$: Observable<FeedPost[]>;
+  loading = false;
+  error: string | null = null;
+
+  constructor(private feedService: FeedService) {
+    this.posts$ = this.feedService.ownPosts$;
+  }
+
+  ngOnInit(): void {
+    this.loadOwnPosts();
+  }
+
+  loadOwnPosts(): void {
+    this.loading = true;
+    this.error = null;
+
+    this.feedService.getOwnPosts().subscribe({
+      next: () => {
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Cannot load your posts right now.';
+        this.loading = false;
+      },
+    });
+  }
+
+  toggleReaction(postId: string): void {
+    this.feedService.toggleReaction(postId).subscribe({
+      next: () => {
+        this.error = null;
+      },
+      error: () => {
+        this.error = 'Cannot update reaction right now.';
+      },
+    });
+  }
+
+  addComment(event: { postId: string; text: string }): void {
+    this.feedService.addComment(event.postId, { text: event.text }).subscribe({
+      next: () => {
+        this.error = null;
+      },
+      error: () => {
+        this.error = 'Cannot add comment right now.';
+      },
+    });
+  }
+
+  toggleSavedPost(postId: string): void {
+    this.feedService.toggleSavedPost(postId).subscribe({
+      next: () => {
+        this.error = null;
+      },
+      error: () => {
+        this.error = 'Cannot update saved post right now.';
+      },
+    });
+  }
+}

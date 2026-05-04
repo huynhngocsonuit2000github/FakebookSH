@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <img class="post-image" [src]="post.image" alt="post image" />
+  <img *ngIf="post.image" class="post-image" [src]="post.image" alt="post image" />
 
   <div class="post-stats">
     <div class="likes">
@@ -48,8 +48,8 @@
   <div class="divider"></div>
 
   <div class="post-actions">
-    <button type="button" (click)="toggleLike()" [class.liked]="liked">
-      <mat-icon>{{ liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+    <button type="button" (click)="toggleLike()" [class.liked]="post.isLiked">
+      <mat-icon>{{ post.isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
       <span>Like</span>
     </button>
 
@@ -63,9 +63,22 @@
       <span>Share</span>
     </button>
 
-    <button type="button">
-      <mat-icon>bookmark_border</mat-icon>
+    <button type="button" (click)="toggleSaved()" [class.liked]="post.isSaved">
+      <mat-icon>{{ post.isSaved ? 'bookmark' : 'bookmark_border' }}</mat-icon>
       <span>Save</span>
+    </button>
+  </div>
+
+  <div class="comment-composer">
+    <img class="comment-avatar" src="/assets/design/1.avatar.webp" alt="Your avatar" />
+    <input
+      type="text"
+      [(ngModel)]="newComment"
+      (keyup.enter)="submitComment()"
+      placeholder="Write a comment..."
+    />
+    <button type="button" class="icon-btn" (click)="submitComment()" [disabled]="!newComment.trim()">
+      <mat-icon>send</mat-icon>
     </button>
   </div>
 

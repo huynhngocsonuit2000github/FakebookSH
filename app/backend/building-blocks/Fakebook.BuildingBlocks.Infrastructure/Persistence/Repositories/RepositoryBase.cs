@@ -40,6 +40,11 @@ public abstract class RepositoryBase<TEntity, TDbContext> : IRepositoryBase<TEnt
         await DbSet.AddAsync(entity, cancellationToken);
     }
 
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    {
+        await DbSet.AddRangeAsync(entities, cancellationToken);
+    }
+
     public virtual void Update(TEntity entity)
     {
         DbSet.Update(entity);

@@ -8,12 +8,13 @@ import {
   RegisterRequest,
   RegisterResponse,
 } from '../../state/auth/auth.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly baseUrl = 'https://localhost:7000/api/bff/auth'; // 5000 is used for local debugging, 7000 is used for docker
+  private readonly baseUrl = `${environment.bffBaseUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 

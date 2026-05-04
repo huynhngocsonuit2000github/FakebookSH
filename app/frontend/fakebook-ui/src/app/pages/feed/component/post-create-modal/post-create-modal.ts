@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class PostCreateModal {
   @Output() close = new EventEmitter<void>();
+  @Output() create = new EventEmitter<string>();
 
   content = '';
   avatar = '/assets/design/1.avatar.webp';
@@ -21,7 +22,7 @@ export class PostCreateModal {
   submitPost() {
     if (!this.content.trim()) return;
 
-    console.log('Post:', this.content);
+    this.create.emit(this.content.trim());
     this.content = '';
     this.onClose();
   }
