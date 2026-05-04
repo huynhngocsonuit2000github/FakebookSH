@@ -71,4 +71,8 @@ export class Saved implements OnInit {
       },
     });
   }
+
+  trackByPostId(_: number, post: FeedPost): string {
+    return post.id;
+  }
 }

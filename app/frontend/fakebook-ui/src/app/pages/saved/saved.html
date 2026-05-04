@@ -7,7 +7,7 @@
   <p *ngIf="error" class="page-message">{{ error }}</p>
   <p *ngIf="!loading && !error && (posts$ | async)?.length === 0" class="page-message">No saved posts yet.</p>
 
-  <ng-container *ngFor="let post of posts$ | async">
+  <ng-container *ngFor="let post of posts$ | async; trackBy: trackByPostId">
     <app-post
       [post]="post"
       (reactionToggled)="toggleReaction($event)"
