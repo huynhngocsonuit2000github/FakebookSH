@@ -9,9 +9,7 @@ import { Component, Input } from '@angular/core';
 export class Story {
   @Input() story!: StoryModel;
 
-  constructor() {
-    console.log(this.story);
-  }
+  constructor() {}
 }
 
 export interface StoryModel {

@@ -1,5 +1,6 @@
 using Fakebook.BuildingBlocks.Infrastructure.Persistence.Repositories;
 using Fakebook.Feed.Application.Boundary.Repositories;
+using Fakebook.Feed.Application.Feed;
 using Fakebook.Feed.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +12,22 @@ public sealed class PostRepository : RepositoryBase<Post, FeedDbContext>, IPostR
     {
     }
 
-    public Task<List<Post>> GetFeedPostsAsync(CancellationToken cancellationToken)
+    public async Task<List<Post>> GetFeedPostsAsync(FeedCursor? cursor, int limit, CancellationToken cancellationToken)
     {
-        return PostsWithDetails()
-            .OrderByDescending(post => post.CreatedAtUtc)
+        var postIds = await GetFeedPostIdsAsync(cursor, limit + 1, cancellationToken);
+
+        if (postIds.Count == 0)
+        {
+            return [];
+        }
+
+        var posts = await PostsWithDetails()
+            .Where(post => postIds.Contains(post.Id))
             .ToListAsync(cancellationToken);
+
+        return posts
+            .OrderBy(post => postIds.IndexOf(post.Id))
+            .ToList();
     }
 
     public Task<List<Post>> GetOwnPostsAsync(Guid authorId, CancellationToken cancellationToken)
@@ -66,5 +78,30 @@ public sealed class PostRepository : RepositoryBase<Post, FeedDbContext>, IPostR
             .Include(post => post.Reactions)
             .Include(post => post.SavedBy)
             .AsSplitQuery();
+    }
+
+    private Task<List<Guid>> GetFeedPostIdsAsync(FeedCursor? cursor, int takeCount, CancellationToken cancellationToken)
+    {
+        if (cursor is null)
+        {
+            return DbContext.Posts
+                .OrderByDescending(post => post.CreatedAtUtc)
+                .ThenByDescending(post => post.Id)
+                .Take(takeCount)
+                .Select(post => post.Id)
+                .ToListAsync(cancellationToken);
+        }
+
+        return DbContext.Posts
+            .FromSqlInterpolated($"""
+                SELECT id, author_id, author, username, avatar, visibility, content, feeling, location, image, base_like_count, share_count, created_at_utc, updated_at_utc
+                FROM posts
+                WHERE created_at_utc < {cursor.CreatedAtUtc}
+                   OR (created_at_utc = {cursor.CreatedAtUtc} AND id < {cursor.PostId})
+                ORDER BY created_at_utc DESC, id DESC
+                LIMIT {takeCount}
+                """)
+            .Select(post => post.Id)
+            .ToListAsync(cancellationToken);
     }
 }

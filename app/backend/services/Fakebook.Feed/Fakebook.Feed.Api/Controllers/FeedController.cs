@@ -18,9 +18,9 @@ public sealed class FeedController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IReadOnlyList<FeedPostResponse>> GetFeed(CancellationToken cancellationToken)
+    public Task<FeedPageResponse> GetFeed([FromQuery] string? cursor, [FromQuery] int? limit, CancellationToken cancellationToken)
     {
-        return _feedService.GetFeedAsync(GetCurrentUser(), cancellationToken);
+        return _feedService.GetFeedAsync(GetCurrentUser(), cursor, limit, cancellationToken);
     }
 
     [HttpGet("me/posts")]

@@ -2,6 +2,13 @@ namespace Fakebook.Feed.Application.Feed;
 
 public sealed record FeedUser(Guid UserId, string Email, string UserName, string DisplayName, string Avatar);
 
+public sealed record FeedCursor(DateTime CreatedAtUtc, Guid PostId);
+
+public sealed record FeedPageResponse(
+    IReadOnlyList<FeedPostResponse> Posts,
+    string? NextCursor,
+    bool HasMore);
+
 public sealed record FeedPostResponse(
     Guid Id,
     Guid AuthorId,

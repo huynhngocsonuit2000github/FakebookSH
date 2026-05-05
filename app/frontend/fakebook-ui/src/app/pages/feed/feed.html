@@ -16,7 +16,12 @@
       ></app-post>
     </ng-container>
 
-    <p class="feed-end-message">You're all caught up</p>
+    <div #feedScrollAnchor class="feed-scroll-anchor" aria-hidden="true"></div>
+
+    <p *ngIf="loadingMore" class="feed-end-message">Loading more posts...</p>
+    <p *ngIf="!loading && !loadingMore && !error && !hasMore" class="feed-end-message">
+      You're all caught up
+    </p>
   </div>
 
   <aside class="feed-right-sidebar">

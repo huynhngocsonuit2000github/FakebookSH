@@ -5,6 +5,9 @@ namespace Fakebook.Feed.Application.Feed;
 
 public sealed class FeedService : IFeedService
 {
+    private const int DefaultFeedPageSize = 5;
+    private const int MaxFeedPageSize = 20;
+
     private readonly IPostRepository _postRepository;
     private readonly IPostReactionRepository _postReactionRepository;
     private readonly ISavedPostRepository _savedPostRepository;
@@ -18,13 +21,21 @@ public sealed class FeedService : IFeedService
         _postCommentRepository = postCommentRepository;
     }
 
-    public async Task<IReadOnlyList<FeedPostResponse>> GetFeedAsync(FeedUser currentUser, CancellationToken cancellationToken)
+    public async Task<FeedPageResponse> GetFeedAsync(FeedUser currentUser, string? cursor, int? limit, CancellationToken cancellationToken)
     {
         await EnsureCurrentUserSeedRelationsAsync(currentUser.UserId, cancellationToken);
 
-        var posts = await _postRepository.GetFeedPostsAsync(cancellationToken);
+        var pageSize = NormalizePageSize(limit);
+        var decodedCursor = DecodeCursor(cursor);
+        var posts = await _postRepository.GetFeedPostsAsync(decodedCursor, pageSize, cancellationToken);
+        var hasMore = posts.Count > pageSize;
+        var pagePosts = hasMore ? posts.Take(pageSize).ToList() : posts;
+        var nextCursor = hasMore ? EncodeCursor(pagePosts[^1]) : null;
 
-        return posts.Select(post => ToResponse(post, currentUser.UserId)).ToList();
+        return new FeedPageResponse(
+            pagePosts.Select(post => ToResponse(post, currentUser.UserId)).ToList(),
+            nextCursor,
+            hasMore);
     }
 
     public async Task<IReadOnlyList<FeedPostResponse>> GetOwnPostsAsync(FeedUser currentUser, CancellationToken cancellationToken)
@@ -243,6 +254,51 @@ public sealed class FeedService : IFeedService
                 .OrderByDescending(comment => comment.CreatedAtUtc)
                 .Select(comment => new FeedCommentResponse(comment.Id, comment.Avatar, comment.Name, comment.Username, ToRelativeTime(comment.CreatedAtUtc), comment.Text, comment.Likes))
                 .ToList());
+    }
+
+    private static int NormalizePageSize(int? requestedLimit)
+    {
+        if (!requestedLimit.HasValue || requestedLimit.Value <= 0)
+        {
+            return DefaultFeedPageSize;
+        }
+
+        return Math.Min(requestedLimit.Value, MaxFeedPageSize);
+    }
+
+    private static FeedCursor? DecodeCursor(string? cursor)
+    {
+        if (string.IsNullOrWhiteSpace(cursor))
+        {
+            return null;
+        }
+
+        try
+        {
+            var decoded = Convert.FromBase64String(cursor);
+            var value = System.Text.Encoding.UTF8.GetString(decoded);
+            var parts = value.Split('|', 2, StringSplitOptions.TrimEntries);
+
+            if (parts.Length != 2)
+            {
+                throw new FormatException("Cursor must contain createdAtUtc and postId.");
+            }
+
+            var createdAtUtc = DateTime.Parse(parts[0], null, System.Globalization.DateTimeStyles.RoundtripKind);
+            var postId = Guid.Parse(parts[1]);
+
+            return new FeedCursor(createdAtUtc, postId);
+        }
+        catch (Exception exception) when (exception is FormatException or ArgumentException)
+        {
+            throw new ArgumentException("Invalid feed cursor.", nameof(cursor), exception);
+        }
+    }
+
+    private static string EncodeCursor(Post post)
+    {
+        var cursor = $"{post.CreatedAtUtc:o}|{post.Id}";
+        return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(cursor));
     }
 
     private static string NormalizeVisibility(string visibility)

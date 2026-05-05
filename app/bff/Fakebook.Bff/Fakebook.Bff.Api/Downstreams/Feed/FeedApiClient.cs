@@ -8,9 +8,27 @@ public sealed class FeedApiClient : HttpClientHandlerBase, IFeedApiClient
     {
     }
 
-    public Task<IReadOnlyList<FeedPostResponse>> GetFeedAsync(CancellationToken cancellationToken)
+    public Task<FeedPageResponse> GetFeedAsync(string? cursor, int? limit, CancellationToken cancellationToken)
     {
-        return GetForJsonAsync<IReadOnlyList<FeedPostResponse>>("api/feed", cancellationToken);
+        var requestUri = "api/feed";
+        var query = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(cursor))
+        {
+            query.Add($"cursor={Uri.EscapeDataString(cursor)}");
+        }
+
+        if (limit.HasValue)
+        {
+            query.Add($"limit={limit.Value}");
+        }
+
+        if (query.Count > 0)
+        {
+            requestUri = $"{requestUri}?{string.Join("&", query)}";
+        }
+
+        return GetForJsonAsync<FeedPageResponse>(requestUri, cancellationToken);
     }
 
     public Task<IReadOnlyList<FeedPostResponse>> GetOwnPostsAsync(CancellationToken cancellationToken)

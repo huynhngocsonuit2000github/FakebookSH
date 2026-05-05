@@ -17,9 +17,9 @@ public sealed class FeedBffController : BffControllerBase
     }
 
     [HttpGet]
-    public Task<IActionResult> GetFeed(CancellationToken cancellationToken)
+    public Task<IActionResult> GetFeed([FromQuery] string? cursor, [FromQuery] int? limit, CancellationToken cancellationToken)
     {
-        return ExecuteDownstreamAsync(() => _feedApiClient.GetFeedAsync(cancellationToken));
+        return ExecuteDownstreamAsync(() => _feedApiClient.GetFeedAsync(cursor, limit, cancellationToken));
     }
 
     [HttpGet("me/posts")]

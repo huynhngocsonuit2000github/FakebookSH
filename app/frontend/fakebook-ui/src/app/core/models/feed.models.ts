@@ -28,6 +28,12 @@ export interface FeedPost {
   comments: CommentData[];
 }
 
+export interface FeedPage {
+  posts: FeedPost[];
+  nextCursor: string | null;
+  hasMore: boolean;
+}
+
 export interface CreatePostRequest {
   content: string;
   visibility: string;

@@ -15,8 +15,9 @@
   - [x] Load feed, render posts, handle loading/error/empty states, and create posts.
 - [x] Add post interactions
   - [x] Support like/unlike, comment, save, and share.
-    <!-- - Add pagination -->
-      <!-- - Use cursor pagination for infinite scrolling. -->
+- [x] Add pagination
+  - [x] Use cursor pagination for infinite scrolling.
+
         <!-- - Add security rules -->
           <!-- - Validate JWT, protect cookie requests with CSRF, and enforce visibility rules. -->
         <!-- - Add logging and monitoring -->

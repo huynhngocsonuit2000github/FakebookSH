@@ -1,5 +1,10 @@
 namespace Fakebook.Bff.Api.Downstreams.Feed;
 
+public sealed record FeedPageResponse(
+    IReadOnlyList<FeedPostResponse> Posts,
+    string? NextCursor,
+    bool HasMore);
+
 public sealed record FeedPostResponse(
     Guid Id,
     Guid AuthorId,

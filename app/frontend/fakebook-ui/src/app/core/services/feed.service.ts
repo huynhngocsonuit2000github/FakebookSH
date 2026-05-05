@@ -1,28 +1,49 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { AddCommentRequest, CreatePostRequest, FeedPost } from '../models/feed.models';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import { AddCommentRequest, CreatePostRequest, FeedPage, FeedPost } from '../models/feed.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FeedService {
+  private readonly feedPageSize = 5;
   private readonly baseUrl = `${environment.bffBaseUrl}/feed`;
   private readonly postsSubject = new BehaviorSubject<FeedPost[]>([]);
   private readonly ownPostsSubject = new BehaviorSubject<FeedPost[]>([]);
   private readonly savedPostsSubject = new BehaviorSubject<FeedPost[]>([]);
+  private readonly hasMoreFeedPostsSubject = new BehaviorSubject<boolean>(true);
+  private nextFeedCursor: string | null = null;
 
   posts$ = this.postsSubject.asObservable();
   ownPosts$ = this.ownPostsSubject.asObservable();
   savedPosts$ = this.savedPostsSubject.asObservable();
+  hasMoreFeedPosts$ = this.hasMoreFeedPostsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  getFeed(): Observable<FeedPost[]> {
+  getFeed(): Observable<FeedPage> {
+    this.nextFeedCursor = null;
+    this.hasMoreFeedPostsSubject.next(true);
+
     return this.http
-      .get<FeedPost[]>(this.baseUrl)
-      .pipe(tap((posts) => this.postsSubject.next(posts)));
+      .get<FeedPage>(`${this.baseUrl}?limit=${this.feedPageSize}`)
+      .pipe(tap((page) => this.applyFeedPage(page, false)));
+  }
+
+  getMoreFeedPosts(): Observable<FeedPage> {
+    if (!this.hasMoreFeedPostsSubject.value || !this.nextFeedCursor) {
+      return of({
+        posts: this.postsSubject.value,
+        nextCursor: this.nextFeedCursor,
+        hasMore: false,
+      });
+    }
+
+    return this.http
+      .get<FeedPage>(`${this.baseUrl}?limit=${this.feedPageSize}&cursor=${encodeURIComponent(this.nextFeedCursor)}`)
+      .pipe(tap((page) => this.applyFeedPage(page, true)));
   }
 
   getOwnPosts(): Observable<FeedPost[]> {
@@ -89,5 +110,12 @@ export class FeedService {
     const existingPost = posts.some((post) => post.id === updatedPost.id);
 
     return existingPost ? this.replacePost(posts, updatedPost) : [updatedPost, ...posts];
+  }
+
+  private applyFeedPage(page: FeedPage, append: boolean): void {
+    this.nextFeedCursor = page.nextCursor;
+    this.hasMoreFeedPostsSubject.next(page.hasMore);
+
+    this.postsSubject.next(append ? [...this.postsSubject.value, ...page.posts] : page.posts);
   }
 }

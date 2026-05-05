@@ -2,7 +2,7 @@ namespace Fakebook.Bff.Api.Downstreams.Feed;
 
 public interface IFeedApiClient
 {
-    Task<IReadOnlyList<FeedPostResponse>> GetFeedAsync(CancellationToken cancellationToken);
+    Task<FeedPageResponse> GetFeedAsync(string? cursor, int? limit, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<FeedPostResponse>> GetOwnPostsAsync(CancellationToken cancellationToken);
 

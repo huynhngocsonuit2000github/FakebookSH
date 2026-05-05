@@ -2,7 +2,7 @@ namespace Fakebook.Feed.Application.Feed;
 
 public interface IFeedService
 {
-    Task<IReadOnlyList<FeedPostResponse>> GetFeedAsync(FeedUser currentUser, CancellationToken cancellationToken);
+    Task<FeedPageResponse> GetFeedAsync(FeedUser currentUser, string? cursor, int? limit, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<FeedPostResponse>> GetOwnPostsAsync(FeedUser currentUser, CancellationToken cancellationToken);
 

@@ -1,6 +1,6 @@
 services:
   bff-api:
-    image: fakebook-bff:v6
+    image: fakebook-bff:v7
     container_name: fakebook-bff-api
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
@@ -20,7 +20,7 @@ services:
         condition: service_started
 
   feed-api:
-    image: fakebook-feed:v2
+    image: fakebook-feed:v3
     container_name: fakebook-feed-api
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
