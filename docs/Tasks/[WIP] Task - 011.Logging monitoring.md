@@ -1,0 +1,2 @@
+- Add logging and monitoring -->
+  - Use correlation ID, structured logs, health checks, and Seq.
