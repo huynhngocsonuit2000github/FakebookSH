@@ -9,7 +9,14 @@
       <img class="avatar" [src]="avatar" alt="avatar" />
 
       <div>
-        <div class="name">Son Huynh</div>
+        <ng-container *ngIf="user$ | async as user; else fallbackUser">
+          <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="username">@{{ user.userName }}</div>
+        </ng-container>
+        <ng-template #fallbackUser>
+          <div class="name">User</div>
+          <div class="username">@user</div>
+        </ng-template>
 
         <div class="privacy-switch">
           <button

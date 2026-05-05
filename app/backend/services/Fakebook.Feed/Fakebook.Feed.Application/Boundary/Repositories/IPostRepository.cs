@@ -13,10 +13,4 @@ public interface IPostRepository : IRepositoryBase<Post>
     Task<List<Post>> GetSavedPostsAsync(Guid userId, CancellationToken cancellationToken);
 
     Task<Post?> GetByIdWithDetailsAsync(Guid postId, CancellationToken cancellationToken);
-
-    Task<bool> HasSavedPostsAsync(Guid userId, CancellationToken cancellationToken);
-
-    Task<List<Post>> GetLatestPostsAsync(int count, CancellationToken cancellationToken);
-
-    Task<bool> HasReactionAsync(Guid userId, Guid postId, CancellationToken cancellationToken);
 }

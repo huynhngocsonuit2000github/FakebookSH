@@ -23,8 +23,6 @@ public sealed class FeedService : IFeedService
 
     public async Task<FeedPageResponse> GetFeedAsync(FeedUser currentUser, string? cursor, int? limit, CancellationToken cancellationToken)
     {
-        await EnsureCurrentUserSeedRelationsAsync(currentUser.UserId, cancellationToken);
-
         var pageSize = NormalizePageSize(limit);
         var decodedCursor = DecodeCursor(cursor);
         var posts = await _postRepository.GetFeedPostsAsync(decodedCursor, pageSize, cancellationToken);
@@ -47,8 +45,6 @@ public sealed class FeedService : IFeedService
 
     public async Task<IReadOnlyList<FeedPostResponse>> GetSavedPostsAsync(FeedUser currentUser, CancellationToken cancellationToken)
     {
-        await EnsureCurrentUserSeedRelationsAsync(currentUser.UserId, cancellationToken);
-
         var posts = await _postRepository.GetSavedPostsAsync(currentUser.UserId, cancellationToken);
 
         return posts.Select(post => ToResponse(post, currentUser.UserId)).ToList();
@@ -176,59 +172,6 @@ public sealed class FeedService : IFeedService
         await _postRepository.SaveChangesAsync(cancellationToken);
 
         return ToResponse(post, currentUser.UserId);
-    }
-
-    private async Task EnsureCurrentUserSeedRelationsAsync(Guid currentUserId, CancellationToken cancellationToken)
-    {
-        var hasSavedPosts = await _postRepository.HasSavedPostsAsync(currentUserId, cancellationToken);
-
-        if (hasSavedPosts)
-        {
-            return;
-        }
-
-        var seedPosts = await _postRepository.GetLatestPostsAsync(5, cancellationToken);
-
-        if (seedPosts.Count < 5)
-        {
-            return;
-        }
-
-        var hasReaction = await _postRepository.HasReactionAsync(currentUserId, seedPosts[0].Id, cancellationToken);
-
-        if (!hasReaction)
-        {
-            var reaction = new PostReaction
-            {
-                UserId = currentUserId,
-                CreatedAtUtc = DateTime.UtcNow,
-                UpdatedAtUtc = DateTime.UtcNow,
-                PostId = seedPosts[0].Id,
-            };
-            await _postReactionRepository.AddAsync(reaction, cancellationToken);
-        }
-
-        var savedPosts = new List<SavedPost>
-        {
-            new SavedPost
-            {
-                UserId = currentUserId,
-                CreatedAtUtc = DateTime.UtcNow,
-                UpdatedAtUtc = DateTime.UtcNow,
-                PostId = seedPosts[1].Id,
-            },
-            new SavedPost
-            {
-                UserId = currentUserId,
-                CreatedAtUtc = DateTime.UtcNow,
-                UpdatedAtUtc = DateTime.UtcNow,
-                PostId = seedPosts[4].Id,
-            }
-        };
-
-        await _savedPostRepository.AddRangeAsync(savedPosts, cancellationToken);
-
-        await _postRepository.SaveChangesAsync(cancellationToken);
     }
 
     private static FeedPostResponse ToResponse(Post post, Guid currentUserId)

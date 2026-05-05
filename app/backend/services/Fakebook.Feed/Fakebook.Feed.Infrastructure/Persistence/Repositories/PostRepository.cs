@@ -52,24 +52,6 @@ public sealed class PostRepository : RepositoryBase<Post, FeedDbContext>, IPostR
             .FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
     }
 
-    public Task<bool> HasSavedPostsAsync(Guid userId, CancellationToken cancellationToken)
-    {
-        return DbContext.SavedPosts.AnyAsync(savedPost => savedPost.UserId == userId, cancellationToken);
-    }
-
-    public Task<List<Post>> GetLatestPostsAsync(int count, CancellationToken cancellationToken)
-    {
-        return PostsWithDetails()
-            .OrderByDescending(post => post.CreatedAtUtc)
-            .Take(count)
-            .ToListAsync(cancellationToken);
-    }
-
-    public Task<bool> HasReactionAsync(Guid userId, Guid postId, CancellationToken cancellationToken)
-    {
-        return DbContext.PostReactions.AnyAsync(reaction => reaction.UserId == userId && reaction.PostId == postId, cancellationToken);
-    }
-
     private IQueryable<Post> PostsWithDetails()
     {
         return DbSet

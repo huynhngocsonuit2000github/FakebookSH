@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
 import { CreatePostRequest } from '../../../../core/models/feed.models';
+import { selectAuthUser } from '../../../../state/auth/auth.reducer';
 
 @Component({
   selector: 'app-post-create-modal',
@@ -11,9 +13,12 @@ import { CreatePostRequest } from '../../../../core/models/feed.models';
   styleUrl: './post-create-modal.scss',
 })
 export class PostCreateModal {
+  private store = inject(Store);
+
   @Output() close = new EventEmitter<void>();
   @Output() create = new EventEmitter<CreatePostRequest>();
 
+  user$ = this.store.select(selectAuthUser);
   content = '';
   image = '';
   hashtagInput = '';
